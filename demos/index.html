@@ -144,7 +144,7 @@ footer .in{padding-block:0 30px}
       <p class="lead">Je surveille votre fiche Google. Dès qu'un avis arrive, je vous envoie la réponse déjà écrite, avec votre ton. Vous validez en 10 secondes depuis votre téléphone.</p>
       <div class="acts">
         <button class="btn btn-play" type="button" data-open="avis"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>Voir la démo</button>
-        <a class="btn btn-ghost" href="https://wa.me/596696392679?text=Bonjour%20Kevin%2C%20j%27ai%20vu%20la%20d%C3%A9mo%20des%20avis%20Google%20et%20je%20veux%20tester." target="_blank" rel="noopener">Je veux tester</a>
+        <a class="btn btn-ghost" href="https://wa.me/596696392679?text=Bonjour%20Koudmen%20Digital%2C%20j%27ai%20vu%20la%20d%C3%A9mo%20des%20avis%20Google%20et%20je%20veux%20tester." target="_blank" rel="noopener">Je veux tester</a>
       </div>
       <div class="meta"><span><b>39 €</b> par mois, tout compris</span><span><b>Premier mois</b> offert</span><span><b>Vous n'avez rien</b> à taper</span></div>
     </div>
@@ -173,7 +173,7 @@ footer .in{padding-block:0 30px}
     <p class="num">0696 39 26 79</p>
   </div>
   <div class="acts">
-    <a class="btn btn-wa" href="https://wa.me/596696392679?text=Bonjour%20Kevin%2C%20j%27ai%20vu%20vos%20d%C3%A9mos%20Koudmen." target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+    <a class="btn btn-wa" href="https://wa.me/596696392679?text=Bonjour%20Koudmen%20Digital%2C%20j%27ai%20vu%20vos%20d%C3%A9mos%20Koudmen." target="_blank" rel="noopener">Écrire sur WhatsApp</a>
   </div>
 </div></section>
 <footer><div class="in">Koudmen Digital · Fort-de-France, Martinique · <a href="../">koudmen-digital.fr</a></div></footer>
@@ -250,7 +250,7 @@ function openDemo(id){const d=DEMOS.find(x=>x.id===id);if(!d)return;last=documen
   $('mTitle').textContent=d.titre;
   $('mDl').innerHTML=`<div><dt>Le problème</dt><dd></dd></div><div><dt>Ce que ça fait</dt><dd></dd></div><div><dt>Ce que vous y gagnez</dt><dd></dd></div><div><dt>Prix</dt><dd class="price">Devis gratuit, adapté à votre commerce</dd></div>`;
   const dd=$('mDl').querySelectorAll('dd');dd[0].textContent=d.pb;dd[1].textContent=d.fait;dd[2].textContent=d.res;if(d.prix)dd[3].textContent=d.prix;
-  $('mCta').href=WA+encodeURIComponent('Bonjour Kevin, j\'ai vu la démo « '+d.titre+' » et je veux tester.');
+  $('mCta').href=WA+encodeURIComponent('Bonjour Koudmen Digital, j\'ai vu la démo « '+d.titre+' » et je veux tester.');
   const M=$('mMedia');M.innerHTML='';
   if(d.video){const v=document.createElement('video');v.src=d.video;v.controls=true;v.playsInline=true;v.preload='metadata';M.append(v);
     M.append(Object.assign(document.createElement('p'),{className:'note',textContent:'Démo réelle, sur une vraie fiche Google.'}));}

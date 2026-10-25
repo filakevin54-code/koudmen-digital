@@ -219,7 +219,7 @@ function progress(){
 f.addEventListener("input",progress);f.addEventListener("change",progress);progress();
 function text(){
   const a=answers();
-  return "Bonjour Kevin, voici mon diagnostic Koudmen :\n\n"+a.filter(([,v])=>v).map(([k,v])=>"• "+k+" : "+v).join("\n");
+  return "Bonjour Koudmen Digital, voici mon diagnostic :\n\n"+a.filter(([,v])=>v).map(([k,v])=>"• "+k+" : "+v).join("\n");
 }
 function missing(){const a=Object.fromEntries(answers());return !a["Commerce"]||!a["Priorité n°1"]}
 f.addEventListener("submit",e=>{

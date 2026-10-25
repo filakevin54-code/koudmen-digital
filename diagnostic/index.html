@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Diagnostic Koudmen</title>
+<meta name="description" content="5 minutes de questions pour recevoir une proposition sur mesure de Koudmen Digital : réponses WhatsApp, avis Google, site et fiche Google, tâches automatisées.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#0e3b33">
+<meta property="og:title" content="Diagnostic Koudmen Digital">
+<meta property="og:description" content="5 minutes, 16 questions, une proposition sur mesure pour votre commerce.">
+<meta property="og:url" content="https://koudmen-digital.fr/diagnostic/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Archivo:wght@400;500;600&display=swap">
+<style>
+/* Layout : un questionnaire en une colonne, cinq blocs numérotés (une vraie suite), réponses en pastilles à toucher ; récapitulatif envoyé sur WhatsApp. Liseré madras en signature. */
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --ink:#14201d; --muted:#55625e; --line:#dcd8cc;
+  --deep:#0e3b33; --deep-ink:#eef5f1; --sun:#f2b632; --red:#c8412b; --green:#2f8a4d;
+  --chip:#efece4;
+  --display:"Unbounded","Segoe UI",system-ui,sans-serif;
+  --body:"Archivo","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1513; --surface:#161f1c; --ink:#e9efec; --muted:#9aa8a3; --line:#2a3633;
+  --deep:#0a2a24; --deep-ink:#eef5f1; --sun:#f5c24f; --red:#e0634c; --green:#4fb36e; --chip:#1d2825; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --surface:#161f1c; --ink:#e9efec; --muted:#9aa8a3; --line:#2a3633;
+  --deep:#0a2a24; --deep-ink:#eef5f1; --sun:#f5c24f; --red:#e0634c; --green:#4fb36e; --chip:#1d2825; color-scheme:dark}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-top:env(safe-area-inset-top,0px)}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1;text-wrap:balance;letter-spacing:-.01em}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.madras{height:10px;background:repeating-linear-gradient(90deg,var(--sun) 0 18px,var(--red) 18px 28px,var(--green) 28px 38px,var(--sun) 38px 52px,var(--deep) 52px 55px)}
+.top{background:var(--deep);color:var(--deep-ink)}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top .wrap{padding-block:22px 34px;display:flex;flex-direction:column;gap:14px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px}
+.nav a{text-decoration:none;font-family:var(--display);font-weight:700;letter-spacing:.02em}
+.nav span{opacity:.75}
+.top h1{font-size:clamp(28px,6vw,44px)}
+.top p{max-width:52ch;opacity:.9}
+.promise{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.promise span{font-size:13px;border:1px solid rgba(238,245,241,.3);border-radius:999px;padding:4px 12px}
+main .wrap{padding-block:28px 64px;display:flex;flex-direction:column;gap:22px}
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
+.progress .bar{flex:1;height:6px;background:var(--line);border-radius:6px;overflow:hidden}
+.progress .bar i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+fieldset{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:20px 18px 22px;margin:0;display:flex;flex-direction:column;gap:20px;min-width:0}
+legend{font-family:var(--display);font-weight:700;font-size:18px;padding:0 6px;display:flex;gap:10px;align-items:baseline}
+legend b{color:var(--red);font-size:13px;font-family:var(--body)}
+.q{display:flex;flex-direction:column;gap:8px;min-width:0}
+.q > label,.q > .lbl{font-weight:600}
+.q small{color:var(--muted);font-size:13px;font-weight:400}
+input[type=text],input[type=tel],textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px;width:100%}
+textarea{min-height:76px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{position:relative;cursor:pointer}
+.chips input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chips span{display:inline-block;padding:8px 14px;border-radius:999px;background:var(--chip);border:1px solid var(--line);font-size:15px;transition:background .15s,border-color .15s}
+.chips input:checked + span{background:var(--deep);color:var(--deep-ink);border-color:var(--deep)}
+.chips input:focus-visible + span{outline:2px solid var(--sun);outline-offset:2px}
+.recap{background:var(--deep);color:var(--deep-ink);border-radius:10px;padding:22px 18px;display:flex;flex-direction:column;gap:14px}
+.recap h2{font-size:22px}
+.recap p{opacity:.9}
+.btn{display:flex;justify-content:center;align-items:center;gap:10px;width:100%;border:none;border-radius:8px;padding:15px 18px;font:inherit;font-weight:600;font-size:16px;cursor:pointer;text-decoration:none}
+.btn.wa{background:var(--sun);color:#14201d}
+.btn.ghost{background:transparent;color:var(--deep-ink);border:1px solid rgba(238,245,241,.35)}
+.warn{color:var(--sun);font-size:14px;min-height:1.2em}
+pre{white-space:pre-wrap;word-break:break-word;background:rgba(0,0,0,.25);border-radius:8px;padding:12px;font-size:13px;max-height:260px;overflow:auto;margin:0}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="madras" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="nav"><a href="../">KOUDMEN</a><span>Diagnostic gratuit</span></div>
+    <h1>5 minutes, et je vous prépare une proposition sur mesure</h1>
+    <p>Répondez à ces questions quand vous avez un moment, entre deux services. Vous recevez sous 48 heures ce que je vous conseille, avec un prix clair.</p>
+    <div class="promise"><span>16 questions</span><span>Pas de rendez-vous obligatoire</span><span>Sans engagement</span></div>
+  </div>
+</header>
+
+<main>
+<form class="wrap" id="f" novalidate>
+  <div class="progress" aria-hidden="true"><span id="pct">0 / 15</span><div class="bar"><i id="bar"></i></div></div>
+
+  <fieldset>
+    <legend><b>1</b>Votre commerce</legend>
+    <div class="q"><label for="nom">Nom du commerce</label><input type="text" id="nom" name="Commerce" autocomplete="organization" placeholder="Ex. Le Kréyol"></div>
+    <div class="q"><span class="lbl">Type de commerce</span><div class="chips" data-name="Type">
+      <label><input type="radio" name="type" value="Restaurant"><span>Restaurant</span></label>
+      <label><input type="radio" name="type" value="Snack / food truck"><span>Snack / food truck</span></label>
+      <label><input type="radio" name="type" value="Bar"><span>Bar</span></label>
+      <label><input type="radio" name="type" value="Boutique"><span>Boutique</span></label>
+      <label><input type="radio" name="type" value="Artisan"><span>Artisan</span></label>
+      <label><input type="radio" name="type" value="Autre"><span>Autre</span></label></div></div>
+    <div class="q"><label for="ville">Commune</label><input type="text" id="ville" name="Commune" placeholder="Ex. Fort-de-France"></div>
+    <div class="q"><span class="lbl">Clients servis par jour, environ</span><div class="chips" data-name="Clients par jour">
+      <label><input type="radio" name="clients" value="Moins de 30"><span>Moins de 30</span></label>
+      <label><input type="radio" name="clients" value="30 à 80"><span>30 à 80</span></label>
+      <label><input type="radio" name="clients" value="80 à 150"><span>80 à 150</span></label>
+      <label><input type="radio" name="clients" value="Plus de 150"><span>Plus de 150</span></label></div></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><b>2</b>Comment vos clients vous trouvent</legend>
+    <div class="q"><span class="lbl">Avez-vous une fiche Google (Maps) ?</span><div class="chips" data-name="Fiche Google">
+      <label><input type="radio" name="fiche" value="Oui, à jour"><span>Oui, à jour</span></label>
+      <label><input type="radio" name="fiche" value="Oui, pas à jour"><span>Oui, pas à jour</span></label>
+      <label><input type="radio" name="fiche" value="Non"><span>Non</span></label>
+      <label><input type="radio" name="fiche" value="Je ne sais pas"><span>Je ne sais pas</span></label></div></div>
+    <div class="q"><span class="lbl">Répondez-vous à vos avis Google ?</span><div class="chips" data-name="Réponses aux avis">
+      <label><input type="radio" name="avis" value="Toujours"><span>Toujours</span></label>
+      <label><input type="radio" name="avis" value="Parfois"><span>Parfois</span></label>
+      <label><input type="radio" name="avis" value="Jamais"><span>Jamais</span></label>
+      <label><input type="radio" name="avis" value="Pas d'avis"><span>Je n'ai pas d'avis</span></label></div></div>
+    <div class="q"><span class="lbl">Où êtes-vous présent ? <small>(plusieurs choix)</small></span><div class="chips" data-name="Présence en ligne">
+      <label><input type="checkbox" name="presence" value="Site internet"><span>Site internet</span></label>
+      <label><input type="checkbox" name="presence" value="Facebook"><span>Facebook</span></label>
+      <label><input type="checkbox" name="presence" value="Instagram"><span>Instagram</span></label>
+      <label><input type="checkbox" name="presence" value="TikTok"><span>TikTok</span></label>
+      <label><input type="checkbox" name="presence" value="Nulle part"><span>Nulle part</span></label></div></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><b>3</b>Vos messages et réservations</legend>
+    <div class="q"><span class="lbl">Par où vos clients vous écrivent ? <small>(plusieurs choix)</small></span><div class="chips" data-name="Canaux">
+      <label><input type="checkbox" name="canaux" value="WhatsApp"><span>WhatsApp</span></label>
+      <label><input type="checkbox" name="canaux" value="Téléphone"><span>Téléphone</span></label>
+      <label><input type="checkbox" name="canaux" value="Instagram"><span>Instagram</span></label>
+      <label><input type="checkbox" name="canaux" value="Facebook"><span>Facebook</span></label>
+      <label><input type="checkbox" name="canaux" value="E-mail"><span>E-mail</span></label></div></div>
+    <div class="q"><span class="lbl">Combien de messages par jour ?</span><div class="chips" data-name="Messages par jour">
+      <label><input type="radio" name="msg" value="Moins de 5"><span>Moins de 5</span></label>
+      <label><input type="radio" name="msg" value="5 à 20"><span>5 à 20</span></label>
+      <label><input type="radio" name="msg" value="Plus de 20"><span>Plus de 20</span></label></div></div>
+    <div class="q"><span class="lbl">Pendant le service, qui répond ?</span><div class="chips" data-name="Qui répond pendant le service">
+      <label><input type="radio" name="qui" value="Moi, quand je peux"><span>Moi, quand je peux</span></label>
+      <label><input type="radio" name="qui" value="Un employé"><span>Un employé</span></label>
+      <label><input type="radio" name="qui" value="Personne, je rappelle après"><span>Personne, je rappelle après</span></label></div></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><b>4</b>Le temps que vous perdez</legend>
+    <div class="q"><span class="lbl">Qu'est-ce que vous refaites chaque semaine ? <small>(plusieurs choix)</small></span><div class="chips" data-name="Tâches répétitives">
+      <label><input type="checkbox" name="taches" value="Répondre aux mêmes questions"><span>Répondre aux mêmes questions</span></label>
+      <label><input type="checkbox" name="taches" value="Prendre les réservations"><span>Prendre les réservations</span></label>
+      <label><input type="checkbox" name="taches" value="Devis et factures"><span>Devis et factures</span></label>
+      <label><input type="checkbox" name="taches" value="Relances clients"><span>Relances clients</span></label>
+      <label><input type="checkbox" name="taches" value="Commandes fournisseurs"><span>Commandes fournisseurs</span></label>
+      <label><input type="checkbox" name="taches" value="Publier sur les réseaux"><span>Publier sur les réseaux</span></label></div></div>
+    <div class="q"><span class="lbl">Ça vous prend combien d'heures par semaine ?</span><div class="chips" data-name="Heures perdues par semaine">
+      <label><input type="radio" name="heures" value="Moins de 2 h"><span>Moins de 2 h</span></label>
+      <label><input type="radio" name="heures" value="2 à 5 h"><span>2 à 5 h</span></label>
+      <label><input type="radio" name="heures" value="Plus de 5 h"><span>Plus de 5 h</span></label></div></div>
+  </fieldset>
+
+  <fieldset>
+    <legend><b>5</b>Votre priorité</legend>
+    <div class="q"><span class="lbl">Si je ne réglais qu'une chose, ce serait :</span><div class="chips" data-name="Priorité n°1">
+      <label><input type="radio" name="prio" value="Ne plus rater de messages ni de réservations"><span>Ne plus rater de messages</span></label>
+      <label><input type="radio" name="prio" value="Avoir de meilleurs avis Google"><span>De meilleurs avis Google</span></label>
+      <label><input type="radio" name="prio" value="Être trouvé sur Google"><span>Être trouvé sur Google</span></label>
+      <label><input type="radio" name="prio" value="Gagner du temps sur l'administratif"><span>Gagner du temps</span></label></div></div>
+    <div class="q"><span class="lbl">Budget mensuel que vous pourriez y mettre</span><div class="chips" data-name="Budget mensuel">
+      <label><input type="radio" name="budget" value="Moins de 50 €"><span>Moins de 50 €</span></label>
+      <label><input type="radio" name="budget" value="50 à 100 €"><span>50 à 100 €</span></label>
+      <label><input type="radio" name="budget" value="100 à 200 €"><span>100 à 200 €</span></label>
+      <label><input type="radio" name="budget" value="Plus de 200 €"><span>Plus de 200 €</span></label>
+      <label><input type="radio" name="budget" value="À voir selon la proposition"><span>À voir selon la proposition</span></label></div></div>
+    <div class="q"><span class="lbl">Pour quand ?</span><div class="chips" data-name="Délai">
+      <label><input type="radio" name="quand" value="Dès que possible"><span>Dès que possible</span></label>
+      <label><input type="radio" name="quand" value="Ce mois-ci"><span>Ce mois-ci</span></label>
+      <label><input type="radio" name="quand" value="Je me renseigne"><span>Je me renseigne</span></label></div></div>
+    <div class="q"><label for="plus">Autre chose à me dire ? <small>(facultatif)</small></label><textarea id="plus" name="Remarque" placeholder="Ex. le samedi soir, c'est la folie au téléphone"></textarea></div>
+    <div class="q"><label for="prenom">Votre prénom</label><input type="text" id="prenom" name="Prénom" autocomplete="given-name"></div>
+  </fieldset>
+
+  <section class="recap" aria-live="polite">
+    <h2>Envoyez-moi vos réponses</h2>
+    <p>Elles partent sur mon WhatsApp, déjà rédigées. Vous n'avez qu'à appuyer sur Envoyer. Je vous réponds sous 48 heures avec ma proposition.</p>
+    <button type="submit" class="btn wa" id="send">Envoyer sur WhatsApp →</button>
+    <button type="button" class="btn ghost" id="copy">Copier mes réponses</button>
+    <p class="warn" id="warn"></p>
+    <pre id="out" hidden></pre>
+  </section>
+</form>
+</main>
+
+<footer><div class="wrap"><span>Koudmen Digital · Fort-de-France, Martinique</span><a href="../">koudmen-digital.fr</a></div></footer>
+
+<script>
+(function(){
+const f=document.getElementById("f"),WA="596696392679",TOTAL=16;
+function answers(){
+  const rows=[];
+  f.querySelectorAll(".q").forEach(q=>{
+    const t=q.querySelector("input[type=text],input[type=tel],textarea");
+    if(t){const v=t.value.trim();rows.push([t.name,v]);return}
+    const g=q.querySelector(".chips");if(!g)return;
+    const v=[...g.querySelectorAll("input:checked")].map(i=>i.value).join(", ");
+    rows.push([g.dataset.name,v]);
+  });
+  return rows;
+}
+function progress(){
+  const n=answers().filter(([k,v])=>v&&k!=="Remarque").length;
+  document.getElementById("pct").textContent=Math.min(n,TOTAL)+" / "+TOTAL;
+  document.getElementById("bar").style.width=Math.min(100,n/TOTAL*100)+"%";
+}
+f.addEventListener("input",progress);f.addEventListener("change",progress);progress();
+function text(){
+  const a=answers();
+  return "Bonjour Kevin, voici mon diagnostic Koudmen :\n\n"+a.filter(([,v])=>v).map(([k,v])=>"• "+k+" : "+v).join("\n");
+}
+function missing(){const a=Object.fromEntries(answers());return !a["Commerce"]||!a["Priorité n°1"]}
+f.addEventListener("submit",e=>{
+  e.preventDefault();
+  const w=document.getElementById("warn");
+  if(missing()){w.textContent="Indiquez au moins le nom du commerce et votre priorité n°1.";return}
+  w.textContent="";
+  const out=document.getElementById("out");out.textContent=text();out.hidden=false;
+  location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(text());
+});
+document.getElementById("copy").addEventListener("click",()=>{
+  const out=document.getElementById("out"),w=document.getElementById("warn");
+  out.textContent=text();out.hidden=false;
+  const done=()=>{w.textContent="Copié. Collez-le dans un message à Koudmen (WhatsApp 0696 39 26 79)."};
+  try{navigator.clipboard.writeText(out.textContent).then(done,()=>{sel(out);w.textContent="Sélectionnez le texte ci-dessus et copiez-le."})}catch(e){sel(out)}
+});
+function sel(el){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)}
+})();
+</script>
+</body>
+</html>

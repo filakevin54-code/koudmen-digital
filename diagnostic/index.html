@@ -59,6 +59,7 @@ legend b{color:var(--red);font-size:13px;font-family:var(--body)}
 .q small{color:var(--muted);font-size:13px;font-weight:400}
 input[type=text],input[type=tel],input[type=email],textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px;width:100%}
 textarea{min-height:76px;resize:vertical}
+input[aria-invalid="true"]{border-color:var(--red);outline:2px solid var(--red)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips label{position:relative;cursor:pointer}
 .chips input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
@@ -182,7 +183,7 @@ footer .wrap{padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));dis
       <label><input type="radio" name="quand" value="Je me renseigne"><span>Je me renseigne</span></label></div></div>
     <div class="q"><label for="plus">Autre chose à me dire ? <small>(facultatif)</small></label><textarea id="plus" name="Remarque" placeholder="Ex. le samedi soir, c'est la folie au téléphone"></textarea></div>
     <div class="q"><label for="prenom">Votre prénom</label><input type="text" id="prenom" name="Prénom" autocomplete="given-name"></div>
-    <div class="q"><label for="email">Votre e-mail <small>(pour recevoir la proposition par écrit)</small></label><input type="email" id="email" name="E-mail" autocomplete="email" inputmode="email" placeholder="vous@exemple.fr">
+    <div class="q"><label for="email">Votre e-mail <small>(pour recevoir la proposition par écrit)</small></label><input type="email" id="email" name="E-mail" autocomplete="email" inputmode="email" placeholder="vous@exemple.fr" required aria-required="true">
       <small>Il sert uniquement à vous envoyer votre proposition. Pas de publicité, pas de revente.</small></div>
   </fieldset>
 
@@ -224,12 +225,13 @@ function text(){
   return "Bonjour Koudmen Digital, voici mon diagnostic :\n\n"+a.filter(([,v])=>v).map(([k,v])=>"• "+k+" : "+v).join("\n");
 }
 function missing(){const a=Object.fromEntries(answers());return !a["Commerce"]||!a["Priorité n°1"]}
-function badMail(){const v=(Object.fromEntries(answers())["E-mail"]||"");return v&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)}
+function badMail(){const v=(Object.fromEntries(answers())["E-mail"]||"");return !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)}
 f.addEventListener("submit",e=>{
   e.preventDefault();
   const w=document.getElementById("warn");
   if(missing()){w.textContent="Indiquez au moins le nom du commerce et votre priorité n°1.";return}
-  if(badMail()){w.textContent="Votre e-mail semble incomplet. Vérifiez-le, ou laissez le champ vide.";document.getElementById("email").focus();return}
+  if(badMail()){const m=document.getElementById("email");w.textContent=m.value.trim()?"Votre e-mail semble incomplet. Vérifiez-le, par exemple : nom@gmail.com":"Indiquez votre e-mail pour recevoir votre proposition par écrit.";m.setAttribute("aria-invalid","true");m.focus();return}
+  document.getElementById("email").removeAttribute("aria-invalid");
   w.textContent="";
   const out=document.getElementById("out");out.textContent=text();out.hidden=false;
   location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(text());

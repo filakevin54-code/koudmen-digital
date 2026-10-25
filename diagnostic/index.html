@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <meta name="theme-color" content="#0e3b33">
 <meta property="og:title" content="Diagnostic Koudmen Digital">
-<meta property="og:description" content="5 minutes, 16 questions, une proposition sur mesure pour votre commerce.">
+<meta property="og:description" content="5 minutes, 17 questions, une proposition sur mesure pour votre commerce.">
 <meta property="og:url" content="https://koudmen-digital.fr/diagnostic/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Archivo:wght@400;500;600&display=swap">
@@ -57,7 +57,7 @@ legend b{color:var(--red);font-size:13px;font-family:var(--body)}
 .q{display:flex;flex-direction:column;gap:8px;min-width:0}
 .q > label,.q > .lbl{font-weight:600}
 .q small{color:var(--muted);font-size:13px;font-weight:400}
-input[type=text],input[type=tel],textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px;width:100%}
+input[type=text],input[type=tel],input[type=email],textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px;width:100%}
 textarea{min-height:76px;resize:vertical}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips label{position:relative;cursor:pointer}
@@ -84,7 +84,7 @@ footer .wrap{padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));dis
     <div class="nav"><a href="../">KOUDMEN</a><span>Diagnostic gratuit</span></div>
     <h1>5 minutes, et je vous prépare une proposition sur mesure</h1>
     <p>Répondez à ces questions quand vous avez un moment, entre deux services. Vous recevez sous 48 heures ce que je vous conseille, avec un prix clair.</p>
-    <div class="promise"><span>16 questions</span><span>Pas de rendez-vous obligatoire</span><span>Sans engagement</span></div>
+    <div class="promise"><span>17 questions</span><span>Pas de rendez-vous obligatoire</span><span>Sans engagement</span></div>
   </div>
 </header>
 
@@ -182,6 +182,8 @@ footer .wrap{padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));dis
       <label><input type="radio" name="quand" value="Je me renseigne"><span>Je me renseigne</span></label></div></div>
     <div class="q"><label for="plus">Autre chose à me dire ? <small>(facultatif)</small></label><textarea id="plus" name="Remarque" placeholder="Ex. le samedi soir, c'est la folie au téléphone"></textarea></div>
     <div class="q"><label for="prenom">Votre prénom</label><input type="text" id="prenom" name="Prénom" autocomplete="given-name"></div>
+    <div class="q"><label for="email">Votre e-mail <small>(pour recevoir la proposition par écrit)</small></label><input type="email" id="email" name="E-mail" autocomplete="email" inputmode="email" placeholder="vous@exemple.fr">
+      <small>Il sert uniquement à vous envoyer votre proposition. Pas de publicité, pas de revente.</small></div>
   </fieldset>
 
   <section class="recap" aria-live="polite">
@@ -199,11 +201,11 @@ footer .wrap{padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));dis
 
 <script>
 (function(){
-const f=document.getElementById("f"),WA="596696392679",TOTAL=16;
+const f=document.getElementById("f"),WA="596696392679",TOTAL=17;
 function answers(){
   const rows=[];
   f.querySelectorAll(".q").forEach(q=>{
-    const t=q.querySelector("input[type=text],input[type=tel],textarea");
+    const t=q.querySelector("input[type=text],input[type=tel],input[type=email],textarea");
     if(t){const v=t.value.trim();rows.push([t.name,v]);return}
     const g=q.querySelector(".chips");if(!g)return;
     const v=[...g.querySelectorAll("input:checked")].map(i=>i.value).join(", ");
@@ -222,10 +224,12 @@ function text(){
   return "Bonjour Koudmen Digital, voici mon diagnostic :\n\n"+a.filter(([,v])=>v).map(([k,v])=>"• "+k+" : "+v).join("\n");
 }
 function missing(){const a=Object.fromEntries(answers());return !a["Commerce"]||!a["Priorité n°1"]}
+function badMail(){const v=(Object.fromEntries(answers())["E-mail"]||"");return v&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)}
 f.addEventListener("submit",e=>{
   e.preventDefault();
   const w=document.getElementById("warn");
   if(missing()){w.textContent="Indiquez au moins le nom du commerce et votre priorité n°1.";return}
+  if(badMail()){w.textContent="Votre e-mail semble incomplet. Vérifiez-le, ou laissez le champ vide.";document.getElementById("email").focus();return}
   w.textContent="";
   const out=document.getElementById("out");out.textContent=text();out.hidden=false;
   location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(text());

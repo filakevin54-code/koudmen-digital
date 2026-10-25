@@ -202,6 +202,7 @@ footer .wrap{padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));dis
 
 <script>
 (function(){
+const HOOK="https://n8n.srv1889456.hstgr.cloud/webhook/koudmen-diagnostic";
 const f=document.getElementById("f"),WA="596696392679",TOTAL=17;
 function answers(){
   const rows=[];
@@ -234,7 +235,9 @@ f.addEventListener("submit",e=>{
   document.getElementById("email").removeAttribute("aria-invalid");
   w.textContent="";
   const out=document.getElementById("out");out.textContent=text();out.hidden=false;
-  location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(text());
+  /* copie des réponses vers n8n (tableau Prospects Koudmen), sans bloquer WhatsApp */
+  try{fetch(HOOK,{method:"POST",mode:"no-cors",keepalive:true,body:new URLSearchParams(answers())})}catch(err){}
+  setTimeout(()=>{location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(text())},250);
 });
 document.getElementById("copy").addEventListener("click",()=>{
   const out=document.getElementById("out"),w=document.getElementById("warn");

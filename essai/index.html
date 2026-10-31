@@ -130,7 +130,7 @@ const MAX=3, $=id=>document.getElementById(id);
 const today=new Date().toISOString().slice(0,10);
 function used(){try{const o=JSON.parse(localStorage.getItem('kd-essai')||'{}');return o.j===today?o.n||0:0;}catch(e){return 0;}}
 function bump(){try{localStorage.setItem('kd-essai',JSON.stringify({j:today,n:used()+1}));}catch(e){}}
-function showLeft(){const r=MAX-used();$('left').textContent=r>0?r+' essai'+(r>1?'s':'')+' gratuit'+(r>1?'s':'')+' aujourd\'hui.':'Vous avez utilisé vos 3 essais du jour. Pour la suite, écrivez-moi sur WhatsApp.';$('go').disabled=r<=0;}
+function showLeft(){const r=MAX-used();$('left').textContent=r>0?r+' essai'+(r>1?'s':'')+' gratuit'+(r>1?'s':'')+' aujourd\'hui.':'Vous avez utilisé vos 3 essais du jour. Pour la suite, écrivez-moi sur WhatsApp.';$('go').disabled=r<=0;$('go').style.cursor=r<=0?'not-allowed':'';$('go').title=r<=0?'Essais du jour épuisés':'';}
 $('ex').onclick=()=>{$('resto').value='Chez Hector';$('avis').value="Plat froid et 45 minutes d'attente pour un simple colombo. Le serveur était sympa mais franchement déçu.";$('avis').focus();};
 $('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('out').textContent);$('copy').textContent='Copiée ✓';setTimeout(()=>$('copy').textContent='Copier la réponse',2000);}catch(e){}};
 $('f').addEventListener('submit',async e=>{

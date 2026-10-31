@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Essai gratuit · Koudmen</title>
+<meta name="description" content="Collez un avis Google de votre restaurant : Koudmen Digital vous propose une réponse prête en quelques secondes. Gratuit, sans inscription.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#0e3b33">
+<meta property="og:title" content="Votre avis Google, répondu en 10 secondes">
+<meta property="og:description" content="Collez un avis, recevez une réponse prête. Gratuit, sans inscription. Koudmen Digital · Fort-de-France.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Archivo:wght@400;500;600&display=swap">
+<style>
+/* Layout : bandeau vert profond (titre + formulaire), puis la réponse et l'offre ; signature = liseré madras */
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --ink:#14201d; --muted:#55625e; --line:#dcd8cc;
+  --deep:#0e3b33; --deep-2:#14493f; --deep-ink:#eef5f1; --deep-muted:#a9c2b9;
+  --sun:#f2b632; --red:#c8412b; --green:#2f8a4d;
+  --display:"Unbounded","Segoe UI",system-ui,sans-serif;
+  --body:"Archivo","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1513; --surface:#161f1c; --ink:#e9efec; --muted:#9aa8a3; --line:#2a3633;
+  --deep:#0a2a24; --deep-2:#113a32; --deep-ink:#eef5f1; --deep-muted:#9fb8af;
+  --sun:#f5c24f; --red:#e0634c; --green:#4fb36e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --surface:#161f1c; --ink:#e9efec; --muted:#9aa8a3; --line:#2a3633;
+  --deep:#0a2a24; --deep-2:#113a32; --deep-ink:#eef5f1; --deep-muted:#9fb8af;
+  --sun:#f5c24f; --red:#e0634c; --green:#4fb36e; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+a{color:inherit}
+h1,h2{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+.in{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.madras{height:8px;background:repeating-linear-gradient(90deg,var(--red) 0 22px,var(--sun) 22px 34px,var(--green) 34px 50px,var(--sun) 50px 56px,var(--red) 56px 70px)}
+.screen{background:var(--deep);color:var(--deep-ink)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px}
+.logo{font-family:var(--display);font-weight:700;font-size:17px;text-decoration:none}
+.logo span{color:var(--sun)}
+.bar a.small{font-size:14px;color:var(--deep-muted);text-decoration:none}
+.bar a.small:hover{color:var(--deep-ink)}
+.hero{padding-block:16px 36px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sun);margin:0 0 12px}
+.hero h1{font-size:clamp(26px,5.4vw,42px)}
+.hero h1 em{font-style:normal;color:var(--sun)}
+.lead{color:var(--deep-muted);margin:14px 0 22px;max-width:56ch}
+form{display:grid;gap:12px}
+label{font-weight:600;font-size:15px;display:block;margin-bottom:6px}
+input,textarea{font:inherit;width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.07);color:var(--deep-ink);padding:12px 14px}
+input::placeholder,textarea::placeholder{color:var(--deep-muted)}
+textarea{min-height:140px;resize:vertical}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:600;text-decoration:none;border-radius:999px;padding:13px 22px;border:2px solid transparent;font-size:16px;cursor:pointer}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-sun{background:var(--sun);color:#14201d}
+.btn-wa{background:var(--green);color:#fff}
+.btn-ghost{background:none;border-color:var(--line);color:var(--ink)}
+.btn:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.hint{font-size:14px;color:var(--deep-muted)}
+.ex{background:none;border:0;color:var(--sun);font:inherit;font-size:14px;text-decoration:underline;cursor:pointer;padding:0}
+main{padding-block:28px 48px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.card h2{font-size:16px;margin-bottom:10px}
+.rep{white-space:pre-wrap;font-size:17px}
+.err{color:var(--red);font-weight:600}
+.offer{margin-top:16px;background:color-mix(in srgb,var(--green) 10%,var(--surface));border-color:color-mix(in srgb,var(--green) 35%,var(--line))}
+.offer p{margin:0 0 14px}
+.offer b.price{font-family:var(--display);font-size:22px}
+.steps{margin:20px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.steps li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start;color:var(--muted)}
+.steps li span{font-family:var(--display);font-weight:700;color:var(--green)}
+.hidden{display:none!important}
+footer{padding-block:20px 32px;color:var(--muted);font-size:14px}
+.dots::after{content:"";animation:d 1.2s steps(4) infinite}
+@keyframes d{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+@media (prefers-reduced-motion:reduce){.dots::after{animation:none;content:"…"}}
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="in">
+    <div class="bar"><a class="logo" href="../">Koudmen <span>Digital</span></a><a class="small" href="../demos/">Voir la démo vidéo</a></div>
+    <div class="hero">
+      <p class="eyebrow">Essai gratuit · Fort-de-France</p>
+      <h1>Collez un avis Google.<br><em>Recevez la réponse.</em></h1>
+      <p class="lead">Un avis reçu sur votre restaurant, bon ou mauvais ? Collez-le ici : une réponse polie et personnalisée est prête en quelques secondes. Gratuit, sans inscription.</p>
+      <form id="f">
+        <div><label for="resto">Nom de votre restaurant</label><input id="resto" maxlength="80" placeholder="Ex. : Chez Hector" autocomplete="organization"></div>
+        <div><label for="avis">L'avis de votre client</label><textarea id="avis" maxlength="1500" required placeholder="Collez ici le texte de l'avis…"></textarea></div>
+        <div class="row">
+          <button class="btn btn-sun" id="go" type="submit">Générer ma réponse</button>
+          <button class="ex" id="ex" type="button">Essayer avec un exemple</button>
+        </div>
+        <div class="hint" id="left"></div>
+      </form>
+    </div>
+  </div>
+  <div class="madras"></div>
+</div>
+
+<main class="in">
+  <div class="card hidden" id="outCard" aria-live="polite">
+    <h2 id="outTitle">Votre réponse</h2>
+    <div class="rep" id="out"></div>
+    <div class="row" id="outActs" style="margin-top:14px"><button class="btn btn-ghost" id="copy" type="button">Copier la réponse</button></div>
+  </div>
+
+  <div class="card offer">
+    <p>Vous aimeriez que <strong>chaque nouvel avis</strong> reçoive sa réponse, sans y penser ? Une réponse vous attend à chaque avis : vous validez en 10 secondes, elle est publiée.</p>
+    <p><b class="price">39 € / mois</b> · tout compris · premier mois offert</p>
+    <a class="btn btn-wa" id="wa" href="https://wa.me/596696392679" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4Z"/></svg>En parler sur WhatsApp</a>
+    <ul class="steps">
+      <li><span>1</span><div>Je relie votre fiche Google, une seule fois.</div></li>
+      <li><span>2</span><div>À chaque avis, une réponse dans votre ton arrive sur votre téléphone.</div></li>
+      <li><span>3</span><div>Vous validez ou modifiez. C'est vous qui gardez la main.</div></li>
+    </ul>
+  </div>
+</main>
+<footer class="in">Koudmen Digital · Fort-de-France, Martinique · <a href="../">koudmen-digital.fr</a></footer>
+
+<script>
+const API='https://n8n.srv1889456.hstgr.cloud/webhook/avis-essai';
+const MAX=3, $=id=>document.getElementById(id);
+const today=new Date().toISOString().slice(0,10);
+function used(){try{const o=JSON.parse(localStorage.getItem('kd-essai')||'{}');return o.j===today?o.n||0:0;}catch(e){return 0;}}
+function bump(){try{localStorage.setItem('kd-essai',JSON.stringify({j:today,n:used()+1}));}catch(e){}}
+function showLeft(){const r=MAX-used();$('left').textContent=r>0?r+' essai'+(r>1?'s':'')+' gratuit'+(r>1?'s':'')+' aujourd\'hui.':'Vous avez utilisé vos 3 essais du jour. Pour la suite, écrivez-moi sur WhatsApp.';$('go').disabled=r<=0;}
+$('ex').onclick=()=>{$('resto').value='Chez Hector';$('avis').value="Plat froid et 45 minutes d'attente pour un simple colombo. Le serveur était sympa mais franchement déçu.";$('avis').focus();};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('out').textContent);$('copy').textContent='Copiée ✓';setTimeout(()=>$('copy').textContent='Copier la réponse',2000);}catch(e){}};
+$('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const avis=$('avis').value.trim(), resto=$('resto').value.trim();
+  if(avis.length<5||used()>=MAX)return;
+  $('go').disabled=true;$('go').textContent='Rédaction en cours';$('go').classList.add('dots');
+  $('outCard').classList.remove('hidden');$('outTitle').textContent='Votre réponse';$('out').className='rep';$('out').textContent='Rédaction de votre réponse…';$('outActs').classList.add('hidden');
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({avis,resto})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.ok)throw new Error(j.message||'indisponible');
+    bump();
+    $('out').textContent=j.reponse;$('outActs').classList.remove('hidden');
+    if(resto)$('wa').href='https://wa.me/596696392679?text='+encodeURIComponent('Bonjour, j\'ai testé la réponse aux avis pour '+resto+'. J\'aimerais en savoir plus.');
+  }catch(err){
+    $('out').className='rep err';$('out').textContent=err.message&&err.message!=='indisponible'&&err.message!=='Failed to fetch'?err.message:'L\'essai est indisponible pour le moment. Réessayez dans quelques minutes, ou écrivez-moi sur WhatsApp.';
+  }
+  $('go').classList.remove('dots');$('go').textContent='Générer ma réponse';showLeft();
+  $('outCard').scrollIntoView({behavior:'smooth',block:'start'});
+});
+showLeft();
+</script>
+</body>
+</html>

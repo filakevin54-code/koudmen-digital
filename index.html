@@ -136,6 +136,23 @@ details p{color:var(--muted);margin:10px 0 0;max-width:65ch}
 .qrcard b{display:block;font-family:var(--display);font-size:15px;font-weight:500;margin-bottom:4px}
 .qrcard span{font-size:15px;opacity:.85}
 .qrcard:hover span{text-decoration:underline}
+/* Compteur temps gagné */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin-top:32px;align-items:stretch}
+@media (max-width:820px){.calc{grid-template-columns:1fr}}
+.calc-in{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:grid;gap:22px;align-content:center}
+.calc-row{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:baseline}
+.calc-row span{font-weight:600}
+.calc-row output{font-family:var(--display);font-weight:600;color:var(--green);font-variant-numeric:tabular-nums}
+.calc-row input{grid-column:1/-1;width:100%;accent-color:var(--green);height:28px;cursor:pointer}
+.calc-out{background:var(--deep);color:var(--deep-ink);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:6px}
+.calc-k{margin:0;text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:600;color:var(--sun)}
+.calc-big{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(52px,8vw,76px);line-height:1.05;color:var(--sun);font-variant-numeric:tabular-nums}
+.calc-days{margin:0 0 10px;opacity:.9}
+.calc-cal{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-bottom:16px;max-width:300px}
+.calc-cal i{aspect-ratio:1;border-radius:4px;background:rgba(255,255,255,.12)}
+.calc-cal i.on{background:var(--sun)}
+@media (prefers-reduced-motion:no-preference){.calc-cal i{transition:background .3s calc(var(--i) * 25ms)}}
+.calc-note{color:var(--muted);font-size:14px;margin:14px 0 0}
 footer .in{padding-block:24px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}}
 </style>
@@ -229,6 +246,26 @@ footer .in{padding-block:24px;color:var(--muted);font-size:14px;display:flex;jus
   </div>
 </div></section>
 
+<section class="s" id="temps"><div class="in">
+  <h2>Combien d'heures l'assistant vous rend ?</h2>
+  <p class="sub">Réglez selon votre commerce. Le calcul se fait sur votre écran, rien n'est envoyé.</p>
+  <div class="calc">
+    <div class="calc-in">
+      <label class="calc-row"><span>Messages reçus par jour</span><output id="tg-msg-o"></output><input type="range" id="tg-msg" min="5" max="150" step="5" value="30"></label>
+      <label class="calc-row"><span>Temps pour répondre à un message</span><output id="tg-min-o"></output><input type="range" id="tg-min" min="1" max="10" value="2"></label>
+      <label class="calc-row"><span>Jours d'ouverture par semaine</span><output id="tg-days-o"></output><input type="range" id="tg-days" min="1" max="7" value="6"></label>
+    </div>
+    <div class="calc-out">
+      <p class="calc-k">Temps gagné chaque mois</p>
+      <p class="calc-big"><span id="tg-h">0</span>&nbsp;h</p>
+      <p class="calc-days" id="tg-d" aria-live="polite"></p>
+      <div class="calc-cal" id="tg-cal" aria-hidden="true"></div>
+      <a class="btn" href="diagnostic/" style="background:var(--sun);color:#14201d;justify-content:center">Récupérer ce temps · diagnostic gratuit</a>
+    </div>
+  </div>
+  <p class="calc-note">Estimation : l'assistant traite environ 8 messages sur 10, les autres vous sont transmis. Un mois compte 4,3 semaines.</p>
+</div></section>
+
 <section class="s"><div class="in">
   <h2>Pourquoi Koudmen ?</h2>
   <div class="why">
@@ -274,6 +311,48 @@ document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{
 }));
 </script>
 
+<!-- Compteur « temps gagné » : 8 messages sur 10 traités par l'assistant -->
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const msg=$('tg-msg'), min=$('tg-min'), days=$('tg-days'), out=$('tg-h'), cal=$('tg-cal');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt=n=>n.toLocaleString('fr-FR',{maximumFractionDigits:1});
+for(let i=0;i<30;i++){const c=document.createElement('i');c.style.setProperty('--i',i);cal.appendChild(c)}
+let shown=0, target=0, anim=0, seen=false;
+
+function animateTo(v){
+  cancelAnimationFrame(anim);
+  if(reduced){shown=v;out.textContent=fmt(v);return}
+  const from=shown, t0=performance.now();
+  const step=now=>{
+    const p=Math.min((now-t0)/700,1);
+    shown=from+(v-from)*(1-Math.pow(1-p,3));
+    out.textContent=fmt(Math.round(shown));
+    if(p<1) anim=requestAnimationFrame(step);
+  };
+  anim=requestAnimationFrame(step);
+}
+function update(){
+  $('tg-msg-o').value=msg.value;
+  $('tg-min-o').value=min.value+' min';
+  $('tg-days-o').value=days.value+' j';
+  target=Math.round(msg.value*min.value*days.value*4.3*.8/60);
+  const d=target/8;
+  $('tg-d').textContent=target<1?'Moins d\'une heure par mois.'
+    :`Soit ${fmt(Math.round(d*10)/10)} journée${d>=2?'s':''} de 8 h rendue${d>=2?'s':''} à votre commerce, chaque mois.`;
+  cal.querySelectorAll('i').forEach((c,i)=>c.classList.toggle('on',seen && i<Math.round(d)));
+  if(seen) animateTo(target);
+}
+[msg,min,days].forEach(r=>r.addEventListener('input',update));
+update();
+// Le compteur démarre de 0 quand la section arrive à l'écran
+new IntersectionObserver((es,io)=>{
+  if(es[0].isIntersecting){seen=true;io.disconnect();update()}
+},{threshold:.4}).observe($('temps'));
+})();
+</script>
+
 <!-- Colibri qui suit le curseur, butine les boutons ; panneau de réglages en bas à droite -->
 <style>
 #colibri{position:fixed;left:0;top:0;width:calc(84px * var(--cb-size,1));pointer-events:none;z-index:9998;
@@ -286,6 +365,19 @@ document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{
 .cb-pollen{position:fixed;left:0;top:0;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--sun);
   pointer-events:none;z-index:9997;animation:cb-pollen .9s ease-out forwards}
 @keyframes cb-pollen{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+/* Main qui aide : la pointe de l'index suit le curseur et pousse les boutons */
+#main-aide{position:fixed;left:0;top:0;width:calc(56px * var(--cb-size,1));pointer-events:none;z-index:9998;
+  transform-origin:34% 2.5%;will-change:transform;transition:opacity .4s}
+#main-aide svg{display:block;width:100%;height:auto;overflow:visible}
+#main-aide.off{opacity:0}
+body.kd-hand :is(.btn,button,summary,.card,.qrcard){transition:transform .22s cubic-bezier(.3,1.6,.5,1),filter .15s,box-shadow .22s}
+.kd-push{transform:translateY(-4px) scale(1.05)!important;box-shadow:0 10px 24px rgb(0 0 0 / .18)}
+.card.kd-push,.qrcard.kd-push{transform:translateY(-3px) scale(1.02)!important}
+.kd-check{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 0 3px var(--sun);pointer-events:none;z-index:9999;display:grid;place-items:center;animation:kd-check .8s ease-out forwards}
+.kd-check svg{width:20px;height:20px}
+@keyframes kd-check{0%{transform:scale(0)}25%{transform:scale(1.15)}40%{transform:scale(1)}75%{transform:translateY(-14px);opacity:1}100%{transform:translateY(-24px);opacity:0}}
+#cb-panel[data-masc=main] .cb-bird{display:none}
 
 #cb-toggle{position:fixed;right:16px;bottom:16px;z-index:9999;font:600 15px var(--body);background:var(--deep);color:var(--deep-ink);
   border:2px solid var(--sun);border-radius:999px;padding:10px 16px;cursor:pointer;box-shadow:0 6px 20px rgb(0 0 0 / .18)}
@@ -327,48 +419,81 @@ document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{
   </svg>
 </div>
 
+<div id="main-aide" class="off" aria-hidden="true">
+  <svg viewBox="0 0 64 80" stroke="#5a3a22" stroke-width="1.6" stroke-linejoin="round">
+    <rect x="13" y="30" width="41" height="35" rx="11" fill="#c68a5a"/>
+    <rect x="27" y="29" width="10" height="15" rx="5" fill="#c68a5a"/>
+    <rect x="36" y="31" width="10" height="14" rx="5" fill="#c68a5a"/>
+    <rect x="45" y="34" width="9" height="13" rx="4.5" fill="#c68a5a"/>
+    <rect x="16" y="1" width="12" height="44" rx="6" fill="#c68a5a"/>
+    <rect x="18.5" y="3" width="7" height="8" rx="3.5" fill="#e3b48e" stroke="none"/>
+    <rect x="5" y="41" width="25" height="11" rx="5.5" transform="rotate(28 17 46)" fill="#b67a4c"/>
+    <rect x="18" y="62" width="38" height="17" rx="3" fill="#c8412b"/>
+    <path d="M18 67h38M18 74h38" stroke="#f2b632" stroke-width="3"/>
+    <path d="M30 62v17M44 62v17" stroke="#2f8a4d" stroke-width="2.5" opacity=".8"/>
+  </svg>
+</div>
+
 <button id="cb-toggle" type="button" aria-expanded="false" aria-controls="cb-panel">🐦 Colibri</button>
 <div id="cb-panel" hidden>
-  <h3>Réglages du colibri</h3>
+  <h3>Réglages de la mascotte</h3>
   <div class="madras thin"></div>
+  <fieldset><legend>Mascotte</legend>
+    <label class="sw"><input type="radio" name="cb-masc" value="colibri"><span>🐦 Colibri</span></label>
+    <label class="sw"><input type="radio" name="cb-masc" value="main"><span>🤝 Coup de main</span></label>
+  </fieldset>
   <label class="row"><span>Vitesse</span><output id="cb-speed-o"></output><input type="range" id="cb-speed" min="1" max="10"></label>
   <label class="row"><span>Glisse</span><output id="cb-glide-o"></output><input type="range" id="cb-glide" min="1" max="10"></label>
   <label class="row"><span>Taille</span><output id="cb-size-o"></output><input type="range" id="cb-size" min="50" max="200" step="10"></label>
-  <label class="row"><span>Battements d'ailes</span><output id="cb-flap-o"></output><input type="range" id="cb-flap" min="1" max="10"></label>
-  <fieldset><legend>Plumage</legend>
+  <label class="row cb-bird"><span>Battements d'ailes</span><output id="cb-flap-o"></output><input type="range" id="cb-flap" min="1" max="10"></label>
+  <fieldset class="cb-bird"><legend>Plumage</legend>
     <label class="sw"><input type="radio" name="cb-pal" value="emeraude"><span><i style="--a:#2f8a4d;--b:#c8412b"></i>Émeraude</span></label>
     <label class="sw"><input type="radio" name="cb-pal" value="madras"><span><i style="--a:#f2b632;--b:#c8412b"></i>Madras</span></label>
     <label class="sw"><input type="radio" name="cb-pal" value="nuit"><span><i style="--a:#3b6fd8;--b:#b04fd1"></i>Nuit</span></label>
   </fieldset>
-  <label class="check"><input type="checkbox" id="cb-butine"> Butiner les boutons</label>
-  <label class="check"><input type="checkbox" id="cb-pollen"> Pollen</label>
-  <label class="check"><input type="checkbox" id="cb-calm"> Mode calme (pas de colibri)</label>
+  <label class="check"><input type="checkbox" id="cb-butine"> <span id="cb-butine-l">Butiner les boutons</span></label>
+  <label class="check cb-bird"><input type="checkbox" id="cb-pollen"> Pollen</label>
+  <label class="check"><input type="checkbox" id="cb-calm"> Mode calme (pas de mascotte)</label>
   <button type="button" class="reset" id="cb-reset">Réinitialiser</button>
 </div>
 
 <script>
 (()=>{
-const bird=document.getElementById('colibri'), panel=document.getElementById('cb-panel'), toggle=document.getElementById('cb-toggle');
+const bird=document.getElementById('colibri'), hand=document.getElementById('main-aide'), panel=document.getElementById('cb-panel'), toggle=document.getElementById('cb-toggle');
 const PALETTES={
   emeraude:{body:'#2f8a4d',dark:'#0e3b33',throat:'#c8412b',wing:'#8fd1a6'},
   madras:{body:'#f2b632',dark:'#c8412b',throat:'#2f8a4d',wing:'#f7d98a'},
   nuit:{body:'#3b6fd8',dark:'#1b2b5c',throat:'#b04fd1',wing:'#a9c1f3'}
 };
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const DEFAULTS={speed:5,glide:6,size:100,flap:7,pal:'emeraude',butine:true,pollen:true,calm:reduced};
+const DEFAULTS={masc:'colibri',speed:5,glide:6,size:100,flap:7,pal:'emeraude',butine:true,pollen:true,calm:reduced};
 let cfg={...DEFAULTS};
 try{Object.assign(cfg,JSON.parse(localStorage.getItem('koudmen-colibri')||'{}'))}catch(e){}
 const save=()=>{try{localStorage.setItem('koudmen-colibri',JSON.stringify(cfg))}catch(e){}};
 
 // État physique : (x,y) = pointe du bec
-let x=innerWidth*.7, y=160, vx=0, vy=0, mx=x+20, my=y, facing=1, sx=1, spin=0, dock=null, lastPollen=0, raf=0, last=performance.now();
+let x=innerWidth*.7, y=160, vx=0, vy=0, mx=x+20, my=y, facing=1, sx=1, spin=0, tap=0, dock=null, lastPollen=0, raf=0, last=performance.now();
+const isHand=()=>cfg.masc==='main';
+
+// La main soulève le bouton survolé vers le visiteur
+function push(){
+  document.querySelectorAll('.kd-push').forEach(e=>e.classList.remove('kd-push'));
+  if(dock && cfg.butine && !cfg.calm && isHand()) dock.classList.add('kd-push');
+}
 
 function apply(){
   const p=PALETTES[cfg.pal]||PALETTES.emeraude;
   for(const k in p) bird.style.setProperty('--cb-'+k,p[k]);
   bird.style.setProperty('--cb-size',cfg.size/100);
+  hand.style.setProperty('--cb-size',cfg.size/100);
   bird.style.setProperty('--cb-flap',(150-cfg.flap*12)+'ms');
-  bird.classList.toggle('off',cfg.calm);
+  bird.classList.toggle('off',cfg.calm||isHand());
+  hand.classList.toggle('off',cfg.calm||!isHand());
+  document.body.classList.toggle('kd-hand',isHand()&&!cfg.calm);
+  panel.dataset.masc=cfg.masc;
+  toggle.textContent=isHand()?'🤝 Coup de main':'🐦 Colibri';
+  document.getElementById('cb-butine-l').textContent=isHand()?'Pousser les boutons':'Butiner les boutons';
+  push();
   document.getElementById('cb-speed-o').value=cfg.speed;
   document.getElementById('cb-glide-o').value=cfg.glide;
   document.getElementById('cb-size-o').value=cfg.size+' %';
@@ -379,6 +504,16 @@ function syncInputs(){
   for(const k of ['speed','glide','size','flap']) document.getElementById('cb-'+k).value=cfg[k];
   for(const k of ['butine','pollen','calm']) document.getElementById('cb-'+k).checked=cfg[k];
   panel.querySelectorAll('[name=cb-pal]').forEach(r=>r.checked=r.value===cfg.pal);
+  panel.querySelectorAll('[name=cb-masc]').forEach(r=>r.checked=r.value===cfg.masc);
+}
+
+function check(px,py){
+  const d=document.createElement('i');
+  d.className='kd-check';
+  d.style.left=px+'px'; d.style.top=py+'px';
+  d.innerHTML='<svg viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 8.5 15 16 6"/></svg>';
+  document.body.appendChild(d);
+  d.addEventListener('animationend',()=>d.remove());
 }
 
 function pollen(px,py){
@@ -394,7 +529,11 @@ function pollen(px,py){
 function tick(now){
   const f=Math.min((now-last)/16.7,3); last=now;
   let tx, ty;
-  if(dock && cfg.butine){
+  if(isHand()){
+    // Le bout du doigt se place sous le bouton, sinon juste sous le curseur
+    if(dock && cfg.butine){const r=dock.getBoundingClientRect(); tx=r.left+r.width/2; ty=r.bottom+1}
+    else{tx=mx+14; ty=my+22}
+  }else if(dock && cfg.butine){
     // Se poser sur le côté du bouton le plus proche, bec tourné vers lui
     const r=dock.getBoundingClientRect(), left=x<r.left+r.width/2;
     facing=left?1:-1; tx=left?r.left-4:r.right+4; ty=r.top+r.height/2;
@@ -411,6 +550,14 @@ function tick(now){
   const bob=Math.sin(now/170)*3*calmness;
   const tilt=Math.max(-30,Math.min(30,vx*facing*.6+vy*.5));
   if(spin>0) spin=Math.max(0,spin-12*f);
+  if(isHand()){
+    if(tap>0) tap=Math.max(0,tap-.07*f);
+    const w=hand.offsetWidth, h=w*1.25, docked=dock&&cfg.butine;
+    const lean=docked?0:-12+Math.max(-18,Math.min(18,vx*.7));
+    hand.style.transform=`translate(${x-w*.34}px,${y-h*.025+(docked?0:bob*.5)}px) rotate(${lean}deg) scale(${1-.14*Math.sin(tap*Math.PI)})`;
+    raf=requestAnimationFrame(tick);
+    return;
+  }
   const w=bird.offsetWidth, h=w*.64;
   bird.style.transform=`translate(${x-w*.98}px,${y-h*.33+bob}px) rotate(${facing*tilt+spin*Math.sign(sx||1)}deg) scaleX(${Math.abs(sx)<.08?.08*Math.sign(sx||1):sx})`;
 
@@ -422,13 +569,17 @@ function tick(now){
 
 const FLOWERS='.btn, a, button, summary, .card';
 addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
-addEventListener('pointerdown',e=>{mx=e.clientX;my=e.clientY; if(!e.target.closest('#cb-panel,#cb-toggle')) spin=360});
+addEventListener('pointerdown',e=>{
+  mx=e.clientX;my=e.clientY;
+  if(cfg.calm || e.target.closest('#cb-panel,#cb-toggle')) return;
+  if(isHand()){tap=1; check(mx,my)} else spin=360;
+});
 document.addEventListener('pointerover',e=>{
   const el=e.target.closest(FLOWERS);
-  if(el && !el.closest('#cb-panel,#cb-toggle')) dock=el;
+  if(el && !el.closest('#cb-panel,#cb-toggle')){dock=el; push()}
 });
 document.addEventListener('pointerout',e=>{
-  if(dock && !(e.relatedTarget && dock.contains(e.relatedTarget))) dock=null;
+  if(dock && !(e.relatedTarget && dock.contains(e.relatedTarget))){dock=null; push()}
 });
 
 toggle.addEventListener('click',()=>{
@@ -437,6 +588,7 @@ toggle.addEventListener('click',()=>{
 panel.addEventListener('input',e=>{
   const t=e.target;
   if(t.name==='cb-pal') cfg.pal=t.value;
+  else if(t.name==='cb-masc') cfg.masc=t.value;
   else if(t.type==='checkbox') cfg[t.id.slice(3)]=t.checked;
   else cfg[t.id.slice(3)]=+t.value;
   apply(); save();
@@ -444,5 +596,110 @@ panel.addEventListener('input',e=>{
 document.getElementById('cb-reset').addEventListener('click',()=>{cfg={...DEFAULTS};syncInputs();apply();save()});
 
 syncInputs(); apply();
+})();
+</script>
+
+<!-- Madras qui se tisse fil par fil quand il arrive à l'écran -->
+<style>
+@property --mw{syntax:'<percentage>';inherits:true;initial-value:100%}
+.madras.weave{position:relative;--mw:0%;-webkit-mask:linear-gradient(90deg,#000 var(--mw),transparent 0);mask:linear-gradient(90deg,#000 var(--mw),transparent 0)}
+.madras.weave::after{content:"";position:absolute;top:50%;left:var(--mw);width:18px;height:4px;margin:-2px 0 0 -18px;border-radius:2px;
+  background:#fff;box-shadow:0 0 6px rgb(255 255 255 / .9)}
+.madras.weave.woven::after{transition:opacity .3s;opacity:0}
+@keyframes mw-weave{to{--mw:100%}}
+</style>
+<script>
+(()=>{
+// Sans @property l'animation resterait bloquée à 0 % : on garde alors le madras fixe
+if(matchMedia('(prefers-reduced-motion: reduce)').matches || !CSS.registerProperty) return;
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting) return;
+  const m=e.target, w=m.offsetWidth;
+  // Un pas par fil (~14 px), durée selon la largeur
+  m.style.animation=`mw-weave ${Math.min(2.4,Math.max(.8,w/600)).toFixed(2)}s steps(${Math.max(8,Math.round(w/14))},end) forwards`;
+  m.addEventListener('animationend',()=>m.classList.add('woven'),{once:true});
+  io.unobserve(m);
+}),{threshold:.6});
+document.querySelectorAll('.madras').forEach(m=>{m.classList.add('weave');io.observe(m)});
+})();
+</script>
+
+<!-- Ciel de Martinique : le haut de page suit le vrai soleil de Fort-de-France (essai : ?heure=18:00) -->
+<style>
+.hero{position:relative;overflow:hidden;isolation:isolate}
+.sky{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.sky>*{position:absolute;inset:0}
+.sky .warm{background:linear-gradient(to top,rgb(255 138 61 / .8),rgb(200 65 43 / .45) 35%,transparent 70%);opacity:var(--warm,0)}
+.sky .dusk{background:linear-gradient(to top,rgb(232 96 120 / .6),rgb(107 58 122 / .5) 40%,transparent 80%);opacity:var(--dusk,0)}
+.sky .night{background:linear-gradient(to bottom,rgb(4 12 28 / .65),rgb(4 12 28 / .25));opacity:var(--night,0)}
+.sky .stars{opacity:var(--night,0)}
+.sky .stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff}
+@media (prefers-reduced-motion:no-preference){.sky .stars i{animation:sky-tw 3s ease-in-out infinite alternate;animation-delay:var(--d)}}
+@keyframes sky-tw{from{opacity:.25}to{opacity:1}}
+.sky .sun{inset:auto;left:84%;bottom:calc(var(--sun-alt,-20) * 14px);width:150px;height:150px;border-radius:50%;transform:translate(-50%,50%);
+  background:radial-gradient(circle,#fff3c4 0 30%,#f2b632 52%,rgb(242 182 50 / 0) 70%);opacity:var(--sun-o,0)}
+@media (max-width:820px){.sky .sun{bottom:calc(var(--sun-alt,-20) * 5px);width:96px;height:96px}}
+.sky-badge{display:inline-flex;align-items:center;gap:8px;margin:22px 0 0;padding:6px 14px;border-radius:999px;font-size:14px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16)}
+.sky-badge:empty{display:none}
+</style>
+<script>
+(()=>{
+const hero=document.querySelector('.hero'), cta=hero&&hero.querySelector('.cta');
+if(!hero) return;
+const LAT=14.6, LON=-61.07, rad=Math.PI/180, H=36e5;
+const clamp=v=>Math.max(0,Math.min(1,v));
+
+// Hauteur du soleil en degrés au-dessus de l'horizon de Fort-de-France
+function sunAlt(t){
+  const d=t/864e5-10957.5;
+  const g=(357.529+.98560028*d)*rad, q=280.459+.98564736*d;
+  const L=(q+1.915*Math.sin(g)+.02*Math.sin(2*g))*rad, e=(23.439-36e-8*d)*rad;
+  const ra=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L)), dec=Math.asin(Math.sin(e)*Math.sin(L));
+  const ha=((18.697374558+24.06570982441908*d)*15+LON)*rad-ra;
+  return Math.asin(Math.sin(LAT*rad)*Math.sin(dec)+Math.cos(LAT*rad)*Math.cos(dec)*Math.cos(ha))/rad;
+}
+// Martinique = UTC-4 toute l'année ; minuit local du jour en cours
+const midnight=t=>{const l=new Date(t-4*H);return Date.UTC(l.getUTCFullYear(),l.getUTCMonth(),l.getUTCDate())+4*H};
+function cross(from,rising){
+  for(let t=from;t<from+12*H;t+=6e4){const a=sunAlt(t)>-.833;if(a===rising) return t}
+  return null;
+}
+const hm=t=>new Date(t-4*H).toISOString().slice(11,16).replace(':','h');
+
+// ?heure=18:10 pour voir le ciel à une autre heure
+const m=/[?&]heure=(\d{1,2})[:h](\d{2})/.exec(location.search);
+const now=()=>m?midnight(Date.now())+(+m[1])*H+(+m[2])*6e4:Date.now();
+
+const sky=document.createElement('div');
+sky.className='sky'; sky.setAttribute('aria-hidden','true');
+sky.innerHTML='<div class="night"></div><div class="stars"></div><div class="dusk"></div><div class="warm"></div><div class="sun"></div>';
+for(let i=0;i<46;i++){
+  const s=document.createElement('i');
+  s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*70}%;--d:${(-Math.random()*3).toFixed(2)}s;transform:scale(${(.6+Math.random()*.9).toFixed(2)})`;
+  sky.querySelector('.stars').appendChild(s);
+}
+hero.prepend(sky);
+const badge=document.createElement('p');
+badge.className='sky-badge';
+if(cta) cta.after(badge);
+
+function paint(){
+  const t=now(), alt=sunAlt(t), day=midnight(t);
+  const rise=cross(day,true), set=cross(day+12*H,false), pm=t>day+12*H;
+  // Le soleil n'apparaît que la dernière heure, sous la conversation, puis plonge dans le madras
+  sky.style.setProperty('--sun-alt',alt.toFixed(2));
+  sky.style.setProperty('--sun-o',clamp((12-alt)/4).toFixed(2));
+  sky.style.setProperty('--warm',clamp(1-Math.abs(alt-2)/9).toFixed(2));
+  sky.style.setProperty('--dusk',clamp(1-Math.abs(alt+5)/6).toFixed(2));
+  sky.style.setProperty('--night',clamp((-alt-4)/8).toFixed(2));
+  const h=hm(t);
+  badge.textContent=alt<-6?`🌙 ${h} en Martinique : vous dormez, l'assistant répond.`
+    :alt<10&&pm?`🌇 ${h} en Martinique · coucher du soleil à ${hm(set)}`
+    :alt<10?`🌅 ${h} en Martinique · lever du soleil à ${hm(rise)}`
+    :`☀️ ${h} en Martinique · coucher du soleil à ${hm(set)}`;
+}
+paint();
+if(!m) setInterval(paint,6e4);
 })();
 </script>

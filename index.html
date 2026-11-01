@@ -273,3 +273,176 @@ document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{
   if(navigator.clipboard){navigator.clipboard.writeText(txt).then(done).catch(()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)})}
 }));
 </script>
+
+<!-- Colibri qui suit le curseur, butine les boutons ; panneau de réglages en bas à droite -->
+<style>
+#colibri{position:fixed;left:0;top:0;width:calc(84px * var(--cb-size,1));pointer-events:none;z-index:9998;
+  transform-origin:98% 33%;will-change:transform;transition:opacity .4s}
+#colibri svg{display:block;width:100%;height:auto;overflow:visible}
+#colibri .wing{transform-box:fill-box;transform-origin:90% 95%;animation:cb-flap var(--cb-flap,60ms) linear infinite alternate}
+#colibri .wing.back{animation-delay:calc(var(--cb-flap,60ms) / -2);opacity:.5}
+@keyframes cb-flap{from{transform:scaleY(1)}to{transform:scaleY(-.45)}}
+#colibri.off{opacity:0}
+.cb-pollen{position:fixed;left:0;top:0;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--sun);
+  pointer-events:none;z-index:9997;animation:cb-pollen .9s ease-out forwards}
+@keyframes cb-pollen{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+
+#cb-toggle{position:fixed;right:16px;bottom:16px;z-index:9999;font:600 15px var(--body);background:var(--deep);color:var(--deep-ink);
+  border:2px solid var(--sun);border-radius:999px;padding:10px 16px;cursor:pointer;box-shadow:0 6px 20px rgb(0 0 0 / .18)}
+#cb-toggle:focus-visible,#cb-panel :focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+#cb-panel{position:fixed;right:16px;bottom:72px;z-index:9999;width:min(300px,calc(100vw - 32px));max-height:calc(100vh - 100px);overflow:auto;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:18px;
+  box-shadow:0 12px 40px rgb(0 0 0 / .2);font-size:15px}
+#cb-panel[hidden]{display:none}
+#cb-panel h3{font-size:15px;margin:0 0 4px}
+#cb-panel .madras{margin:10px -18px 14px}
+#cb-panel .row{display:grid;grid-template-columns:1fr auto;gap:2px 8px;margin-bottom:12px}
+#cb-panel .row span{font-weight:600}
+#cb-panel output{color:var(--muted);font-variant-numeric:tabular-nums}
+#cb-panel input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--green)}
+#cb-panel fieldset{border:0;padding:0;margin:0 0 12px;display:flex;gap:8px;flex-wrap:wrap}
+#cb-panel legend{font-weight:600;margin-bottom:6px;padding:0}
+#cb-panel .sw{position:relative}
+#cb-panel .sw input{position:absolute;opacity:0}
+#cb-panel .sw span{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;padding:5px 10px;cursor:pointer}
+#cb-panel .sw i{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--a) 50%,var(--b) 50%)}
+#cb-panel .sw input:checked+span{border-color:var(--ink)}
+#cb-panel .sw input:focus-visible+span{outline:3px solid var(--sun);outline-offset:2px}
+#cb-panel .check{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer}
+#cb-panel .check input{accent-color:var(--green);width:18px;height:18px}
+#cb-panel .reset{margin-top:6px;font:600 14px var(--body);background:none;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+</style>
+
+<div id="colibri" aria-hidden="true">
+  <svg viewBox="0 0 100 64">
+    <path class="wing back" d="M44 30C38 12 28 4 18 2c8 12 14 22 22 31z" fill="var(--cb-wing)"/>
+    <path d="M30 38 6 50l6-9-8-7 26-1z" fill="var(--cb-dark)"/>
+    <ellipse cx="42" cy="36" rx="17" ry="9" transform="rotate(-18 42 36)" fill="var(--cb-body)"/>
+    <ellipse cx="55" cy="33" rx="6" ry="5" fill="var(--cb-throat)"/>
+    <circle cx="59" cy="26" r="8" fill="var(--cb-body)"/>
+    <path d="M51 23q8-8 16 1" fill="var(--cb-dark)" opacity=".45"/>
+    <circle cx="62" cy="24.5" r="1.8" fill="#111"/><circle cx="62.6" cy="23.9" r=".55" fill="#fff"/>
+    <path d="M66 25 98 21 66 28z" fill="#1b1b1b"/>
+    <path class="wing" d="M46 30C40 10 30 0 20-2c8 14 14 25 22 36z" fill="var(--cb-wing)"/>
+  </svg>
+</div>
+
+<button id="cb-toggle" type="button" aria-expanded="false" aria-controls="cb-panel">🐦 Colibri</button>
+<div id="cb-panel" hidden>
+  <h3>Réglages du colibri</h3>
+  <div class="madras thin"></div>
+  <label class="row"><span>Vitesse</span><output id="cb-speed-o"></output><input type="range" id="cb-speed" min="1" max="10"></label>
+  <label class="row"><span>Glisse</span><output id="cb-glide-o"></output><input type="range" id="cb-glide" min="1" max="10"></label>
+  <label class="row"><span>Taille</span><output id="cb-size-o"></output><input type="range" id="cb-size" min="50" max="200" step="10"></label>
+  <label class="row"><span>Battements d'ailes</span><output id="cb-flap-o"></output><input type="range" id="cb-flap" min="1" max="10"></label>
+  <fieldset><legend>Plumage</legend>
+    <label class="sw"><input type="radio" name="cb-pal" value="emeraude"><span><i style="--a:#2f8a4d;--b:#c8412b"></i>Émeraude</span></label>
+    <label class="sw"><input type="radio" name="cb-pal" value="madras"><span><i style="--a:#f2b632;--b:#c8412b"></i>Madras</span></label>
+    <label class="sw"><input type="radio" name="cb-pal" value="nuit"><span><i style="--a:#3b6fd8;--b:#b04fd1"></i>Nuit</span></label>
+  </fieldset>
+  <label class="check"><input type="checkbox" id="cb-butine"> Butiner les boutons</label>
+  <label class="check"><input type="checkbox" id="cb-pollen"> Pollen</label>
+  <label class="check"><input type="checkbox" id="cb-calm"> Mode calme (pas de colibri)</label>
+  <button type="button" class="reset" id="cb-reset">Réinitialiser</button>
+</div>
+
+<script>
+(()=>{
+const bird=document.getElementById('colibri'), panel=document.getElementById('cb-panel'), toggle=document.getElementById('cb-toggle');
+const PALETTES={
+  emeraude:{body:'#2f8a4d',dark:'#0e3b33',throat:'#c8412b',wing:'#8fd1a6'},
+  madras:{body:'#f2b632',dark:'#c8412b',throat:'#2f8a4d',wing:'#f7d98a'},
+  nuit:{body:'#3b6fd8',dark:'#1b2b5c',throat:'#b04fd1',wing:'#a9c1f3'}
+};
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const DEFAULTS={speed:5,glide:6,size:100,flap:7,pal:'emeraude',butine:true,pollen:true,calm:reduced};
+let cfg={...DEFAULTS};
+try{Object.assign(cfg,JSON.parse(localStorage.getItem('koudmen-colibri')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('koudmen-colibri',JSON.stringify(cfg))}catch(e){}};
+
+// État physique : (x,y) = pointe du bec
+let x=innerWidth*.7, y=160, vx=0, vy=0, mx=x+20, my=y, facing=1, sx=1, spin=0, dock=null, lastPollen=0, raf=0, last=performance.now();
+
+function apply(){
+  const p=PALETTES[cfg.pal]||PALETTES.emeraude;
+  for(const k in p) bird.style.setProperty('--cb-'+k,p[k]);
+  bird.style.setProperty('--cb-size',cfg.size/100);
+  bird.style.setProperty('--cb-flap',(150-cfg.flap*12)+'ms');
+  bird.classList.toggle('off',cfg.calm);
+  document.getElementById('cb-speed-o').value=cfg.speed;
+  document.getElementById('cb-glide-o').value=cfg.glide;
+  document.getElementById('cb-size-o').value=cfg.size+' %';
+  document.getElementById('cb-flap-o').value=Math.round(1000/(150-cfg.flap*12)/2)+' /s';
+  if(cfg.calm){cancelAnimationFrame(raf);raf=0}else if(!raf){last=performance.now();raf=requestAnimationFrame(tick)}
+}
+function syncInputs(){
+  for(const k of ['speed','glide','size','flap']) document.getElementById('cb-'+k).value=cfg[k];
+  for(const k of ['butine','pollen','calm']) document.getElementById('cb-'+k).checked=cfg[k];
+  panel.querySelectorAll('[name=cb-pal]').forEach(r=>r.checked=r.value===cfg.pal);
+}
+
+function pollen(px,py){
+  const d=document.createElement('i');
+  d.className='cb-pollen';
+  d.style.left=px+'px'; d.style.top=py+'px';
+  d.style.setProperty('--dx',(Math.random()*40-20)+'px');
+  d.style.setProperty('--dy',(Math.random()*30+10)+'px');
+  document.body.appendChild(d);
+  d.addEventListener('animationend',()=>d.remove());
+}
+
+function tick(now){
+  const f=Math.min((now-last)/16.7,3); last=now;
+  let tx, ty;
+  if(dock && cfg.butine){
+    // Se poser sur le côté du bouton le plus proche, bec tourné vers lui
+    const r=dock.getBoundingClientRect(), left=x<r.left+r.width/2;
+    facing=left?1:-1; tx=left?r.left-4:r.right+4; ty=r.top+r.height/2;
+  }else{
+    if(Math.abs(mx-x)>30) facing=mx>x?1:-1;
+    tx=mx-facing*18; ty=my+4;
+  }
+  const k=.01+cfg.speed*.012, damp=Math.pow(.55+cfg.glide*.038,f);
+  vx=(vx+(tx-x)*k*f)*damp; vy=(vy+(ty-y)*k*f)*damp;
+  x+=vx*f; y+=vy*f;
+  sx+=(facing-sx)*Math.min(.25*f,1);
+
+  const calmness=Math.max(0,1-Math.hypot(vx,vy)/4);
+  const bob=Math.sin(now/170)*3*calmness;
+  const tilt=Math.max(-30,Math.min(30,vx*facing*.6+vy*.5));
+  if(spin>0) spin=Math.max(0,spin-12*f);
+  const w=bird.offsetWidth, h=w*.64;
+  bird.style.transform=`translate(${x-w*.98}px,${y-h*.33+bob}px) rotate(${facing*tilt+spin*Math.sign(sx||1)}deg) scaleX(${Math.abs(sx)<.08?.08*Math.sign(sx||1):sx})`;
+
+  if(dock && cfg.butine && cfg.pollen && calmness>.6 && now-lastPollen>120){
+    lastPollen=now; pollen(x+facing*6,y+bob);
+  }
+  raf=requestAnimationFrame(tick);
+}
+
+const FLOWERS='.btn, a, button, summary, .card';
+addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
+addEventListener('pointerdown',e=>{mx=e.clientX;my=e.clientY; if(!e.target.closest('#cb-panel,#cb-toggle')) spin=360});
+document.addEventListener('pointerover',e=>{
+  const el=e.target.closest(FLOWERS);
+  if(el && !el.closest('#cb-panel,#cb-toggle')) dock=el;
+});
+document.addEventListener('pointerout',e=>{
+  if(dock && !(e.relatedTarget && dock.contains(e.relatedTarget))) dock=null;
+});
+
+toggle.addEventListener('click',()=>{
+  const open=panel.hidden; panel.hidden=!open; toggle.setAttribute('aria-expanded',open);
+});
+panel.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.name==='cb-pal') cfg.pal=t.value;
+  else if(t.type==='checkbox') cfg[t.id.slice(3)]=t.checked;
+  else cfg[t.id.slice(3)]=+t.value;
+  apply(); save();
+});
+document.getElementById('cb-reset').addEventListener('click',()=>{cfg={...DEFAULTS};syncInputs();apply();save()});
+
+syncInputs(); apply();
+})();
+</script>

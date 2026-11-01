@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /carte/imprimer.html
+
+Sitemap: https://koudmen-digital.fr/sitemap.xml

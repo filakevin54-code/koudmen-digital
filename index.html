@@ -153,6 +153,20 @@ details p{color:var(--muted);margin:10px 0 0;max-width:65ch}
 .calc-cal i.on{background:var(--sun)}
 @media (prefers-reduced-motion:no-preference){.calc-cal i{transition:background .3s calc(var(--i) * 25ms)}}
 .calc-note{color:var(--muted);font-size:14px;margin:14px 0 0}
+/* Tarifs avis Google */
+.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:36px;max-width:880px}
+@media (max-width:760px){.plans{grid-template-columns:1fr}}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:14px;position:relative}
+.plan.hl{border:2px solid var(--green)}
+.plan .tag{position:absolute;top:-13px;left:24px;background:var(--sun);color:#14201d;font-weight:600;font-size:13px;padding:4px 12px;border-radius:999px}
+.plan h3{font-size:19px}
+.plan p.price{color:var(--ink);font-family:var(--display);font-weight:700;font-size:40px;line-height:1;margin:0}
+.plan .price small{font-family:var(--body);font-weight:500;font-size:16px;color:var(--muted)}
+.plan p{margin:0;color:var(--muted)}
+.plan ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:15px}
+.plan .btn{justify-content:center;margin-top:auto}
+.plan .btn-dark{background:var(--ink);color:var(--bg)}
+.plans-note{color:var(--muted);font-size:14px;margin:16px 0 0}
 footer .in{padding-block:24px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}}
 </style>
@@ -223,6 +237,29 @@ footer .in{padding-block:24px;color:var(--muted);font-size:14px;display:flex;jus
   </div>
 </div></section>
 
+<section class="s" id="tarifs"><div class="in">
+  <h2>Réponses aux avis Google : deux formules</h2>
+  <p class="sub">Répondre à chaque avis montre à vos futurs clients que vous êtes à l'écoute. Choisissez si vous le faites vous-même ou si je m'en occupe.</p>
+  <div class="plans">
+    <article class="plan">
+      <h3>Libre-service</h3>
+      <p class="price">29&nbsp;€<small> / mois</small></p>
+      <p>Vous collez l'avis dans l'appli Koudmen Avis : la réponse est prête en quelques secondes, vous la copiez sur Google.</p>
+      <ul><li>Des réponses dans le ton de votre restaurant</li><li>Vous relisez et publiez vous-même</li><li>Idéal si vous avez 5 minutes par semaine</li></ul>
+      <a class="btn btn-dark" href="STRIPE_LINK_29" target="_blank" rel="noopener">Commencer · 29 € / mois</a>
+    </article>
+    <article class="plan hl">
+      <span class="tag">1er mois offert</span>
+      <h3>On s'occupe de tout</h3>
+      <p class="price">49&nbsp;€<small> / mois</small></p>
+      <p>Je rédige la réponse à chacun de vos avis Google, vous validez d'un message WhatsApp, et je la publie.</p>
+      <ul><li>Tous vos avis traités, même pendant le rush</li><li>Les avis négatifs pris avec soin</li><li>Vous validez avant chaque publication</li></ul>
+      <a class="btn btn-wa" href="https://wa.me/596696392679?text=Bonjour%2C%20je%20voudrais%20une%20d%C3%A9mo%20de%20la%20formule%20%C2%AB%20On%20s%27occupe%20de%20tout%20%C2%BB%20pour%20les%20avis%20Google." target="_blank" rel="noopener">Demander une démo</a>
+    </article>
+  </div>
+  <p class="plans-note">Prix par mois. TVA non applicable, art. 293 B du CGI.</p>
+</div></section>
+
 <section class="s"><div class="in">
   <h2>Comment ça se passe</h2>
   <div class="steps">
@@ -275,7 +312,7 @@ footer .in{padding-block:24px;color:var(--muted);font-size:14px;display:flex;jus
   </div>
   <div class="faq">
     <details><summary>Je ne suis pas à l'aise avec l'informatique, c'est un problème ?</summary><p>Non. Je m'occupe de tout, et vous utilisez des outils que vous connaissez déjà, comme WhatsApp.</p></details>
-    <details><summary>Combien ça coûte ?</summary><p>Ça dépend de vos besoins. Le diagnostic et la proposition sont gratuits, et vous avez un prix clair avant de commencer.</p></details>
+    <details><summary>Combien ça coûte ?</summary><p>Pour les avis Google : 29 € par mois en libre-service, ou 49 € par mois si je m'occupe de tout, avec le premier mois offert (<a href="#tarifs">voir les formules</a>). Pour un site ou un assistant, ça dépend de vos besoins : le diagnostic et la proposition sont gratuits, et vous avez un prix clair avant de commencer.</p></details>
     <details><summary>Et si l'assistant se trompe ?</summary><p>Vous fixez les règles, et vous pouvez valider les réponses importantes avant envoi. Je l'ajuste avec vous pendant les premières semaines.</p></details>
   </div>
 </div></section>

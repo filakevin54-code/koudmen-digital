@@ -156,12 +156,12 @@ footer .in{padding-block:0 30px}
     <div>
       <p class="eyebrow">Démo à la une</p>
       <h1>Je réponds à vos avis Google</h1>
-      <p class="lead">Je surveille votre fiche Google. Dès qu'un avis arrive, je vous envoie la réponse déjà écrite, avec votre ton. Vous validez en 10 secondes depuis votre téléphone.</p>
+      <p class="lead">Je surveille votre fiche Google. Dès qu'un avis arrive, je vous envoie la réponse déjà écrite, avec votre ton. Vous validez d'un « ok » sur WhatsApp.</p>
       <div class="acts">
         <button class="btn btn-play" type="button" data-open="avis"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>Voir la démo</button>
         <a class="btn btn-ghost" href="https://wa.me/596696392679?text=Bonjour%20Koudmen%20Digital%2C%20j%27ai%20vu%20la%20d%C3%A9mo%20des%20avis%20Google%20et%20je%20veux%20tester." target="_blank" rel="noopener">Je veux tester</a>
       </div>
-      <div class="meta"><span><b>49 €</b> par mois, tout compris</span><span><b>Premier mois</b> offert</span><span><b>Vous n'avez rien</b> à taper</span></div>
+      <div class="meta"><span><b>29 €</b> ou <b>49 €</b> par mois</span><span><b>Premier mois</b> offert sur la formule à 49 €</span><span><b>Vous n'avez rien</b> à taper</span></div>
     </div>
     <div class="phone" aria-hidden="true"><div class="scr" id="heroScr"><div class="hd"><span>Avis Google</span><span>maintenant</span></div></div></div>
   </div></section>
@@ -268,7 +268,7 @@ function openDemo(id){const d=DEMOS.find(x=>x.id===id);if(!d)return;last=documen
   $('mCta').href=WA+encodeURIComponent('Bonjour Koudmen Digital, j\'ai vu la démo « '+d.titre+' » et je veux tester.');
   const M=$('mMedia');M.innerHTML='';
   if(d.video){const v=document.createElement('video');v.src=d.video;v.controls=true;v.playsInline=true;v.preload='metadata';M.append(v);
-    M.append(Object.assign(document.createElement('p'),{className:'note',textContent:'Démo réelle, sur une vraie fiche Google.'}));}
+    M.append(Object.assign(document.createElement('p'),{className:'note',textContent:'Vidéo de présentation · restaurant et avis fictifs.'}));}
   else{const scr=document.createElement('div');scr.className='scr';M.append(scr);
     const r=document.createElement('button');r.type='button';r.className='replay';r.textContent='↻ Rejouer';r.onclick=()=>play(scr,d.sim);M.append(r);
     M.append(Object.assign(document.createElement('p'),{className:'note',textContent:d.statut==='live'?'Aperçu animé · la vidéo complète arrive bientôt.':'Aperçu de ce que l\'outil fera. Démo en préparation.'}));

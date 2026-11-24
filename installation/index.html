@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Installation · Koudmen Digital</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#0e3b33">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Archivo:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f6f4ef;--surface:#fff;--ink:#14201d;--muted:#55625e;--line:#dcd8cc;--deep:#0e3b33;--sun:#f2b632;--green:#2f8a4d;--red:#c8412b;
+--display:"Unbounded","Segoe UI",system-ui,sans-serif;--body:"Archivo","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+header{background:var(--deep);color:#eef5f1}
+.in{max-width:900px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left))}
+header .in{padding-block:18px}
+header a{color:inherit;text-decoration:none;font-family:var(--display);font-weight:700}
+.madras{height:8px;background:repeating-linear-gradient(90deg,var(--red) 0 40px,var(--sun) 40px 80px,var(--green) 80px 120px)}
+main{padding-block:36px 56px}
+h1{font-family:var(--display);font-size:clamp(24px,5vw,34px);line-height:1.2;margin:0 0 10px}
+.lead{color:var(--muted);margin:0 0 24px}
+video{width:100%;border-radius:16px;background:#0e3b33;display:block}
+ol{padding-left:22px;display:grid;gap:10px;margin:28px 0}
+.mail{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:8px 0 0}
+.mail b{font-size:18px}
+button{font:inherit;font-weight:600;border:0;border-radius:999px;padding:8px 16px;background:var(--deep);color:#fff;cursor:pointer}
+.help{background:var(--deep);color:#eef5f1;border-radius:16px;padding:20px 22px;margin-top:28px}
+.help a{display:inline-block;margin-top:10px;background:var(--sun);color:#14201d;font-weight:600;text-decoration:none;border-radius:999px;padding:10px 18px}
+footer{border-top:1px solid var(--line)}
+footer .in{padding-block:22px;color:var(--muted);font-size:14px}
+footer a{color:inherit}
+</style>
+</head>
+<body>
+<header><div class="in"><a href="../">Koudmen<span style="color:var(--sun)">.</span>Digital</a></div></header>
+<div class="madras"></div>
+<main class="in">
+  <h1>Ajoutez Koudmen à votre fiche Google</h1>
+  <p class="lead">2 minutes, une seule fois. Vous restez propriétaire de votre fiche.</p>
+  <video src="koudmen-installation.mp4" controls playsinline preload="metadata"></video>
+  <ol>
+    <li>Allez sur <b>business.google.com</b> et ouvrez votre fiche.</li>
+    <li>Icône <b>⋮ Plus</b> › <b>Paramètres de la fiche d'établissement</b> › <b>Utilisateurs et accès</b>.</li>
+    <li><b>Ajouter</b>, collez mon adresse e-mail, choisissez <b>Administrateur</b> sous « Accès », puis <b>Inviter</b>.
+      <div class="mail"><b id="m">koudmen.digital@gmail.com</b><button type="button" id="cp">Copier</button></div></li>
+    <li>J'accepte l'invitation : vous recevez un e-mail de confirmation. C'est fini.</li>
+  </ol>
+  <p>En administrateur, je peux répondre à vos avis. Je ne peux ni supprimer votre fiche, ni ajouter ou retirer des utilisateurs. Vous pouvez me retirer quand vous voulez, au même endroit.</p>
+  <div class="help"><b>Bloqué ?</b> On le fait ensemble au téléphone, ça prend 2 minutes.<br><a href="https://wa.me/596696392679?text=Bonjour%20Kevin%2C%20j%27ai%20besoin%20d%27aide%20pour%20t%27ajouter%20%C3%A0%20ma%20fiche%20Google." target="_blank" rel="noopener">Écrire sur WhatsApp · 0696 39 26 79</a></div>
+</main>
+<footer><div class="in">© 2026 Koudmen Digital · Fort-de-France, Martinique · <a href="../mentions-legales/">Mentions légales</a></div></footer>
+<script>
+document.getElementById('cp').addEventListener('click',e=>{const t=document.getElementById('m').textContent;
+ if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>{e.target.textContent='Copié';setTimeout(()=>e.target.textContent='Copier',1500)}).catch(()=>{});});
+</script>
+</body>
+</html>

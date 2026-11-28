@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Koudmen Digital · Carte de visite</title>
-<meta name="description" content="Koudmen Digital : réponses aux avis Google, sites web et assistants IA pour les commerces de Martinique.">
+<meta name="description" content="Koudmen Digital répond aux avis Google des restaurants et des gîtes de Martinique, dans votre ton. 39 €/mois, premier mois offert.">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="icon" href="../favicon.ico" sizes="48x48">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
@@ -140,8 +140,8 @@ li b{display:block}li span{color:var(--muted);font-size:15px}
   </div>
   <div class="mono" aria-hidden="true"><span>K<span style="color:#c8412b">.</span></span></div>
   <h1>Koudmen<span style="color:var(--sun)">.</span>Digital</h1>
-  <p class="brand">Sites web · Automatisation · IA</p>
-  <p class="pitch">Je réponds à vos <b>avis Google</b> pour vous, et j'automatise ce qui vous prend du temps.</p>
+  <p class="brand">Réponses à vos avis Google</p>
+  <p class="pitch">Je réponds à vos <b>avis Google</b> à votre place, dans votre ton. Vous validez, c'est publié.</p>
   <button type="button" class="tilt-hint" id="tilt-hint" hidden>📱 Penchez votre téléphone</button>
 </header>
 <div class="actions">
@@ -154,28 +154,25 @@ li b{display:block}li span{color:var(--muted);font-size:15px}
 </div>
 
 <section class="demo" aria-labelledby="demo-t">
-  <h2 id="demo-t">Votre assistant, en vrai</h2>
-  <p class="sub">Touchez votre métier et regardez-le répondre à un client.</p>
+  <h2 id="demo-t">Un avis, une réponse</h2>
+  <p class="sub">Touchez votre activité et regardez la réponse s'écrire.</p>
   <div class="chips" role="group" aria-label="Votre métier">
     <button class="chip" data-m="resto" aria-pressed="false">🍽️ Restaurant</button>
-    <button class="chip" data-m="garage" aria-pressed="false">🔧 Garage</button>
-    <button class="chip" data-m="salon" aria-pressed="false">💇🏾‍♀️ Salon</button>
-    <button class="chip" data-m="gite" aria-pressed="false">🏝️ Gîte</button>
-    <button class="chip" data-m="boutique" aria-pressed="false">🛍️ Boutique</button>
+    <button class="chip" data-m="gite" aria-pressed="false">🏝️ Gîte · location</button>
   </div>
   <div class="chat" id="chat" aria-live="polite">
-    <div class="chat-head"><i></i><span id="chat-name">Votre commerce · répond en quelques secondes</span></div>
+    <div class="chat-head"><i></i><span id="chat-name">Votre fiche Google · nouvel avis</span></div>
   </div>
-  <a class="btn wa" id="demo-cta" href="https://wa.me/596696392679?text=Bonjour%2C%20je%20veux%20un%20assistant%20comme%20dans%20la%20d%C3%A9mo." target="_blank" rel="noopener">Je veux le même pour mon commerce</a>
+  <a class="btn wa" id="demo-cta" href="https://wa.me/596696392679?text=Bonjour%2C%20j%27ai%20vu%20votre%20carte%20%3A%20je%20veux%20essayer%20les%20r%C3%A9ponses%20aux%20avis%20Google." target="_blank" rel="noopener">Essayer · 1er mois offert</a>
 </section>
 
 <h2>Ce que je fais pour vous</h2>
 <ul>
-  <li><b>Réponses aux avis Google</b><span>Chaque avis reçoit une réponse soignée, que vous validez en un clic.</span></li>
-  <li><b>Réservations et messages WhatsApp</b><span>Un assistant répond à vos clients, même quand vous êtes occupé.</span></li>
-  <li><b>Site web simple et rapide</b><span>Pour qu'on vous trouve sur Google et qu'on vous appelle.</span></li>
+  <li><b>Une réponse à chaque avis</b><span>Les beaux comme les durs, dans le ton de votre maison.</span></li>
+  <li><b>En anglais pour vos visiteurs</b><span>Touristes et voyageurs reçoivent une réponse dans leur langue.</span></li>
+  <li><b>Vous gardez la main</b><span>Rien n'est publié sans votre « ok » sur WhatsApp.</span></li>
 </ul>
-<p class="foot">Premier échange et devis gratuits · <a href="../">koudmen-digital.fr</a></p>
+<p class="foot"><b>39 €/mois</b> · premier mois offert · sans engagement · <a href="../">koudmen-digital.fr</a></p>
 </div>
 
 <script>
@@ -229,30 +226,13 @@ li b{display:block}li span{color:var(--muted);font-size:15px}
   // 2. Démo de l'assistant
   const scripts = {
     resto: { name: 'Le Ti Lolo · restaurant', who: 'restaurant', msgs: [
-      ['in', 'Bonjour, vous avez une table pour 4 ce soir vers 19h30 ?'],
-      ['out', 'Bonsoir ! Oui, il reste une table en terrasse à 19h30 🌴 Je la réserve à quel nom ?'],
-      ['in', 'Au nom de Marie-Line'],
-      ['out', "C'est noté Marie-Line : 4 personnes ce soir, 19h30. Le plat du jour, c'est colombo de poulet 😉"]]},
-    garage: { name: 'Garage du Lamentin', who: 'garage', msgs: [
-      ['in', 'Bonjour, ma voiture fait un bruit au freinage, vous pouvez regarder quand ?'],
-      ['out', 'Bonjour ! On peut la voir jeudi à 8h ou vendredi à 14h. Quel modèle ?'],
-      ['in', 'Clio 4, jeudi 8h ça m’arrange'],
-      ['out', 'Parfait : Clio 4, jeudi 8h, contrôle des freins (environ 1h). Je vous envoie un rappel la veille 🔧']]},
-    salon: { name: 'Studio Belle Kreyòl · salon', who: 'salon', msgs: [
-      ['in', 'Bonjour, il vous reste un créneau samedi pour des tresses ?'],
-      ['out', 'Bonjour ! Samedi il reste 9h ou 13h30. Tresses simples ou avec rajouts ?'],
-      ['in', 'Avec rajouts, 9h'],
-      ['out', "C'est réservé : samedi 9h, tresses avec rajouts (environ 3h). Je vous envoie un rappel vendredi soir ✨"]]},
+      ['in', '<b>★★★☆☆ · M.</b> Les accras étaient top, mais 40 minutes d’attente un samedi midi…'],
+      ['out', 'Merci pour votre retour et ravis que les accras vous aient plu ! Samedi midi a été très chargé, désolés pour l’attente. Au plaisir de vous servir plus vite la prochaine fois.'],
+      ['ok', '✓ Validé par le patron · publié sur Google']]},
     gite: { name: 'Gîte Anse Coco · location', who: 'gîte', msgs: [
-      ['in', 'Bonjour, le gîte est libre du 12 au 19 décembre pour 2 adultes et 1 enfant ?'],
-      ['out', 'Bonjour ! Oui, ces dates sont libres 🏝️ 7 nuits : 630 €, ménage inclus. Je vous bloque les dates 48 h ?'],
-      ['in', 'Oui merci !'],
-      ['out', "C'est bloqué jusqu'à jeudi. Je vous envoie le lien de réservation et le chemin de la plage 🌊"]]},
-    boutique: { name: 'Boutique Madras & Co', who: 'boutique', msgs: [
-      ['in', 'Vous avez la robe madras de votre vitrine en taille M ?'],
-      ['out', 'Oui, il en reste 2 en M 👗 Je vous la mets de côté jusqu’à demain 18h ?'],
-      ['in', 'Oui svp'],
-      ['out', 'C’est fait ! Elle vous attend en caisse. Nous sommes ouverts jusqu’à 18h30.']]}
+      ['in', '<b>★★★★★ · S.</b> Amazing stay! The pool, the garden, the hummingbirds… We’ll be back.'],
+      ['out', 'Thank you so much! We’re delighted you enjoyed the pool and our little hummingbirds. You’re welcome back anytime, the garden will be waiting for you.'],
+      ['ok', '✓ Validé par la propriétaire · réponse en anglais publiée']]}
   };
   const chat = document.getElementById('chat');
   const chatName = document.getElementById('chat-name');
@@ -269,15 +249,16 @@ li b{display:block}li span{color:var(--muted);font-size:15px}
     const id = ++run, s = scripts[key];
     chips.forEach(c => c.setAttribute('aria-pressed', c.dataset.m === key));
     chat.querySelectorAll('.msg, .typing').forEach(n => n.remove());
-    chatName.textContent = s.name + ' · répond en quelques secondes';
-    cta.textContent = 'Je veux le même pour mon ' + s.who;
-    cta.href = 'https://wa.me/596696392679?text=' + encodeURIComponent('Bonjour, j’ai vu la démo sur votre carte : je veux un assistant comme ça pour mon ' + s.who + '.');
+    chatName.textContent = s.name + ' · nouvel avis Google';
+    cta.textContent = 'Essayer · 1er mois offert';
+    cta.href = 'https://wa.me/596696392679?text=' + encodeURIComponent('Bonjour, j’ai vu la démo sur votre carte : je veux essayer les réponses aux avis Google pour mon ' + s.who + '.');
     for (const [dir, text] of s.msgs) {
       if (dir === 'in') { await wait(500); if (id !== run) return; add('msg in', text); }
+      else if (dir === 'ok') { await wait(700); if (id !== run) return; add('msg in', text).style.cssText = 'background:transparent;box-shadow:none;font-weight:600;color:#2f8a4d;padding-left:0'; }
       else {
         const t = add('typing', '<span></span><span></span><span></span>');
         await wait(1100); t.remove(); if (id !== run) return;
-        add('msg out', text + '<small>Assistant Koudmen · 3 s</small>');
+        add('msg out', text + '<small>Réponse proposée par Koudmen · à valider</small>');
         buzz(8);
       }
       await wait(500); if (id !== run) return;

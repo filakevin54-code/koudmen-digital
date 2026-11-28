@@ -56,15 +56,14 @@ h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
 /* 2 vidéos */
 .vids .in{padding-block:6px 40px}
 .vids h2{font-size:clamp(18px,2.2vw,22px);margin:0 0 16px}
-.vgrid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.vgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
 @media (max-width:1000px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.vcard.vert video{aspect-ratio:9/16;max-height:620px;object-fit:contain}
 @media (max-width:760px){.vgrid{grid-template-columns:minmax(0,1fr)}}
 .vcard{margin:0;background:var(--deep-2);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px;position:relative}
 .vcard h3{font-size:17px;padding-left:44px;min-height:34px;display:flex;align-items:center}
 .vcard p{margin:0;color:var(--deep-muted);font-size:15px}
 .vnum{position:absolute;left:18px;top:18px;width:34px;height:34px;border-radius:50%;background:var(--sun);color:#14201d;font-family:var(--display);font-weight:700;display:grid;place-items:center;font-size:16px}
-.vcard video{width:100%;aspect-ratio:16/9;border-radius:12px;background:#000;margin-top:6px}
+.vcard video{width:100%;aspect-ratio:16/9;border-radius:12px;background:#000;margin-top:auto}
 .vnote{color:var(--deep-muted);font-size:13px;margin:12px 0 0}
 /* Écran */
 .screen{background:var(--deep);color:var(--deep-ink)}
@@ -183,11 +182,11 @@ footer .in{padding-block:0 30px}
   <section class="vids" id="videos"><div class="in">
     <h2>Les 3 vidéos</h2>
     <div class="vgrid">
-      <figure class="vcard vert">
+      <figure class="vcard">
         <span class="vnum">1</span>
         <h3>Un avis sans réponse fait fuir vos clients</h3>
         <p>Ce qui se passe quand un client lit un avis 1★ resté sans réponse. 28 s.</p>
-        <video src="koudmen-clients-fuient.mp4" controls playsinline preload="metadata"></video>
+        <video src="koudmen-clients-fuient-16x9.mp4" controls playsinline preload="metadata"></video>
       </figure>
       <figure class="vcard">
         <span class="vnum">2</span>

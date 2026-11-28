@@ -161,7 +161,7 @@ footer .in{padding-block:0 30px}
         <button class="btn btn-play" type="button" data-open="avis"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>Voir la démo</button>
         <a class="btn btn-ghost" href="https://wa.me/596696392679?text=Bonjour%20Koudmen%20Digital%2C%20j%27ai%20vu%20la%20d%C3%A9mo%20des%20avis%20Google%20et%20je%20veux%20tester." target="_blank" rel="noopener">Je veux tester</a>
       </div>
-      <div class="meta"><span><b>29 €</b> ou <b>49 €</b> par mois</span><span><b>Premier mois</b> offert sur la formule à 49 €</span><span><b>Vous n'avez rien</b> à taper</span></div>
+      <div class="meta"><span><b>39 €</b> par mois</span><span><b>Premier mois</b> offert</span><span><b>Vous n'avez rien</b> à taper</span></div>
     </div>
     <div class="phone" aria-hidden="true"><div class="scr" id="heroScr"><div class="hd"><span>Avis Google</span><span>maintenant</span></div></div></div>
   </div></section>
@@ -184,7 +184,7 @@ footer .in{padding-block:0 30px}
 <section class="contact"><div class="in">
   <div>
     <h2>Une démo vous parle ?</h2>
-    <p>Les avis Google, c'est 49 €/mois tout compris, premier mois offert. Ou 29 €/mois en libre-service, avec l'appli Koudmen Avis. Écrivez-moi sur WhatsApp, je vous réponds dans la journée.</p>
+    <p>Les avis Google, c'est 39 €/mois tout compris, premier mois offert, sans engagement. Écrivez-moi sur WhatsApp, je vous réponds dans la journée.</p>
     <p class="num">0696 39 26 79</p>
   </div>
   <div class="acts">
@@ -215,7 +215,7 @@ const ICON={
  key:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M16 6l3 3M14 8l2 2"/></svg>',
  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>'};
 const DEMOS=[
- {id:'avis',titre:'Je réponds à vos avis Google',statut:'live',video:'koudmen-demo-avis-google.mp4',prix:'49 €/mois, tout compris · premier mois offert',icon:'star',bg:'linear-gradient(150deg,#c8412b,#7a2417)',
+ {id:'avis',titre:'Je réponds à vos avis Google',statut:'live',video:'koudmen-demo-avis-google.mp4',prix:'39 €/mois, tout compris · premier mois offert',icon:'star',bg:'linear-gradient(150deg,#c8412b,#7a2417)',
   pb:'Vos clients laissent des avis et personne n\'y répond. Les suivants le voient avant même d\'entrer chez vous.',
   fait:'Je surveille votre fiche. Dès qu\'un avis arrive, j\'écris la réponse avec votre ton et je vous l\'envoie sur WhatsApp. Vous n\'avez rien à taper ni à installer.',
   res:'Vous validez en 10 secondes depuis votre téléphone. Plus aucun avis sans réponse, et une fiche qui donne confiance aux nouveaux clients.',
@@ -224,27 +224,7 @@ const DEMOS=[
   pb:'Pour répondre à vos avis à votre place, j\'ai besoin d\'un accès à votre fiche Google. Et vous ne voulez pas donner vos mots de passe.',
   fait:'Vous m\'ajoutez comme administrateur depuis votre fiche Google, en 4 étapes. La vidéo vous montre où cliquer.',
   res:'Vous restez propriétaire de votre fiche. Je peux répondre aux avis, pas supprimer la fiche, et vous pouvez me retirer quand vous voulez.',
-  sim:[]},
- {id:'resa',titre:'Je prends vos réservations sur WhatsApp',statut:'soon',video:'',icon:'chat',bg:'linear-gradient(150deg,#2f8a4d,#14493f)',
-  pb:'Les messages arrivent pendant le service ou la nuit. Le temps de répondre, le client a réservé ailleurs.',
-  fait:'Un assistant répond tout de suite, propose les créneaux libres et note la réservation dans votre agenda.',
-  res:'Des réservations prises même à 23h, sans décrocher pendant le service.',
-  sim:[['sys','Samedi · 23:47'],['them','Bonsoir, une table pour 4 demain midi ?'],['me','Bonsoir ! Demain midi il reste 12h00 ou 13h30. Laquelle vous convient ?'],['them','13h30 svp, au nom de Joseph'],['me','C\'est noté : 4 personnes, dimanche 13h30, au nom de Joseph. À demain !'],['ok','✓ Ajoutée à votre agenda']]},
- {id:'relance',titre:'Je fais revenir vos anciens clients',statut:'soon',video:'',icon:'back',bg:'linear-gradient(150deg,#d69a1e,#8a5a0c)',
-  pb:'Des clients viennent une fois puis on ne les revoit plus. Personne n\'a le temps de les relancer.',
-  fait:'Un mois après leur visite, ils reçoivent un message gentil avec une petite attention pour revenir.',
-  res:'Des tables remplies par des clients qui vous connaissent déjà.',
-  sim:[['sys','Envoi automatique · 30 jours après la visite'],['me','Bonjour Sandra, ça fait un mois qu\'on ne vous a pas vue ! Le planteur maison vous attend : il est offert sur présentation de ce message cette semaine.'],['them','Oh trop gentil, on passe vendredi 😊'],['ok','✓ 1 client de retour']]},
- {id:'menu',titre:'J\'envoie votre menu du jour',statut:'soon',video:'',icon:'menu',bg:'linear-gradient(150deg,#3d5a99,#1f2f57)',
-  pb:'Tous les matins, il faut écrire le menu, le poster, répondre à « c\'est quoi le plat du jour ? ».',
-  fait:'Vous envoyez une photo de l\'ardoise. Le menu part sur WhatsApp, Instagram et votre fiche Google.',
-  res:'Cinq secondes le matin au lieu de vingt minutes.',
-  sim:[['them','<span class="who">Vous · 10:12</span>📷 Photo de l\'ardoise'],['sys','Menu lu et mis en forme'],['me','Menu du jour : colombo de poulet · court-bouillon de poisson · flan coco. 14 € entrée + plat. Réservez au 0696…'],['ok','✓ Publié sur WhatsApp, Instagram et Google']]},
- {id:'site',titre:'Je crée votre site simple et rapide',statut:'soon',video:'',icon:'globe',bg:'linear-gradient(150deg,#0e3b33,#062019)',
-  pb:'Quand on vous cherche sur Google, on tombe sur une vieille page ou rien du tout.',
-  fait:'Un site clair sur téléphone : votre carte, vos horaires, votre adresse et un bouton pour réserver.',
-  res:'On vous trouve, on voit votre carte, on vous appelle.',
-  sim:[['sys','Recherche Google : « restaurant créole Fort-de-France »'],['them','<span class="who">Votre site</span>Carte · Horaires · Itinéraire · Réserver'],['ok','✓ Un appel en un clic']]}];
+  sim:[]}];
 
 const $=id=>document.getElementById(id);
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;

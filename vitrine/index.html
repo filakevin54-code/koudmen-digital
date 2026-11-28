@@ -168,7 +168,7 @@ footer .inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap
         <p class="mono">koudmen [kud.mɛ̃] n.</p>
         <p>En créole : l'entraide. Quand le voisin construit sa case, tout le quartier vient donner un coup de main.</p>
       </div>
-      <p class="creed-text" id="creed">Je travaille en restauration. Je sais qu'à 21 h, personne n'a le temps de répondre aux avis Google. Koudmen le fait pour vous, dans le ton de votre maison. Vous restez au service. Les clients, eux, voient un patron présent.</p>
+      <p class="creed-text" id="creed">Un avis tombe à 23 h. Vous êtes en plein service, ou en train d'accueillir des voyageurs. Koudmen écrit la réponse dans le ton de votre maison, vous dites ok, c'est publié. Ceux qui lisent votre fiche voient une maison présente. C'est ça, le koudmen.</p>
     </div>
   </section>
 
@@ -212,8 +212,8 @@ footer .inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap
   </section>
 
   <div class="marquee" aria-hidden="true"><div class="track">
-    <span>Avis Google</span><span>Dans votre ton</span><span>Validé sur WhatsApp</span><span>Restaurants</span><span>Fort-de-France</span><span>39 € / mois</span>
-    <span>Avis Google</span><span>Dans votre ton</span><span>Validé sur WhatsApp</span><span>Restaurants</span><span>Fort-de-France</span><span>39 € / mois</span>
+    <span>Avis Google</span><span>Dans votre ton</span><span>Validé sur WhatsApp</span><span>Restaurants &amp; gîtes</span><span>Martinique</span><span>39 € / mois</span>
+    <span>Avis Google</span><span>Dans votre ton</span><span>Validé sur WhatsApp</span><span>Restaurants &amp; gîtes</span><span>Martinique</span><span>39 € / mois</span>
   </div></div>
 
   <section class="band method" aria-label="Méthode">
@@ -266,7 +266,7 @@ tick();setInterval(tick,15000);
 
 /* ---------- manifeste mot à mot ---------- */
 const creed=document.getElementById("creed");
-const HL=["restauration.","Koudmen","présent."];
+const HL=["23","Koudmen","présente.","koudmen."];
 creed.innerHTML=creed.textContent.trim().split(/\s+/).map(w=>`<span class="w${HL.some(h=>w.startsWith(h))?" hl":""}">${w}</span>`).join(" ");
 const words=[...creed.querySelectorAll(".w")];
 function creedUpdate(){

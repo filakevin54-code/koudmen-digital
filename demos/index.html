@@ -56,7 +56,9 @@ h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
 /* 2 vidéos */
 .vids .in{padding-block:6px 40px}
 .vids h2{font-size:clamp(18px,2.2vw,22px);margin:0 0 16px}
-.vgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.vgrid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:1000px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.vcard.vert video{aspect-ratio:9/16;max-height:620px;object-fit:contain}
 @media (max-width:760px){.vgrid{grid-template-columns:minmax(0,1fr)}}
 .vcard{margin:0;background:var(--deep-2);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px;position:relative}
 .vcard h3{font-size:17px;padding-left:44px;min-height:34px;display:flex;align-items:center}
@@ -170,7 +172,7 @@ footer .in{padding-block:0 30px}
       <h1>Je réponds à vos avis Google</h1>
       <p class="lead">Je surveille votre fiche Google. Dès qu'un avis arrive, je vous envoie la réponse déjà écrite, avec votre ton. Vous validez d'un « ok » sur WhatsApp.</p>
       <div class="acts">
-        <a class="btn btn-play" href="#videos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>Voir les 2 vidéos</a>
+        <a class="btn btn-play" href="#videos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>Voir les 3 vidéos</a>
         <a class="btn btn-ghost" href="https://wa.me/596696392679?text=Bonjour%20Koudmen%20Digital%2C%20j%27ai%20vu%20la%20d%C3%A9mo%20des%20avis%20Google%20et%20je%20veux%20tester." target="_blank" rel="noopener">Je veux tester</a>
       </div>
       <div class="meta"><span><b>39 €</b> par mois</span><span><b>Premier mois</b> offert</span><span><b>Vous n'avez rien</b> à taper</span></div>
@@ -179,16 +181,22 @@ footer .in{padding-block:0 30px}
   </div></section>
 
   <section class="vids" id="videos"><div class="in">
-    <h2>Les 2 vidéos</h2>
+    <h2>Les 3 vidéos</h2>
     <div class="vgrid">
-      <figure class="vcard">
+      <figure class="vcard vert">
         <span class="vnum">1</span>
+        <h3>Un avis sans réponse fait fuir vos clients</h3>
+        <p>Ce qui se passe quand un client lit un avis 1★ resté sans réponse. 28 s.</p>
+        <video src="koudmen-clients-fuient.mp4" controls playsinline preload="metadata"></video>
+      </figure>
+      <figure class="vcard">
+        <span class="vnum">2</span>
         <h3>Pourquoi répondre à vos avis Google</h3>
         <p>Ce que vos futurs clients voient sur votre fiche, et comment je m'en occupe pour vous. 1 min 15.</p>
         <video src="koudmen-demo-avis-google.mp4" controls playsinline preload="metadata"></video>
       </figure>
       <figure class="vcard">
-        <span class="vnum">2</span>
+        <span class="vnum">3</span>
         <h3>Comment m'ajouter à votre fiche Google</h3>
         <p>4 étapes, 2 minutes. Vous restez propriétaire de votre fiche et vous pouvez me retirer quand vous voulez. 1 min.</p>
         <video src="../installation/koudmen-installation.mp4" controls playsinline preload="metadata"></video>
